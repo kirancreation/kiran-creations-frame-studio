@@ -1,4 +1,4 @@
-Kiran Creations Bengali Frame Studio — GitHub Pages
+Kiran Creation A4 ফটো ফ্রেম — GitHub Pages
 
 Files:
 - index.html: Website with 11 selectable frame styles, image upload, editable Bengali greeting, and PNG download.
