@@ -1,17 +1,22 @@
-Kiran Creations Bengali Frame Studio — Advanced Zoom / Pan Update
+Kiran Creations Bengali Frame Studio - New Features
 
-Added controls:
-- Second photo zoom and pan inside its photo area
-- Select Extra Text or Clipart and zoom / move it with sliders
-- Drag on the preview to move the currently selected layer
-- PNG download remains available
+Included:
+- index.html
+- baby-milestone.png
+- love-birthday-calendar.jpg
+- durga-puja-bengali-frame.png
 
-Upload steps:
-1. Extract this ZIP on your computer.
+New options:
+1. Upload first photo
+2. Upload a separate second photo
+3. Add custom text
+4. Choose a clipart (flower, heart, diya, hibiscus, sparkle, celebration, teddy, butterfly, Bengali ornament)
+5. Existing frame choices and PNG download remain
+
+To update GitHub Pages:
+1. Extract this ZIP.
 2. Open https://github.com/kirancreation/kiran-creations-frame-studio
-3. Click Add file > Upload files.
-4. Upload index.html AND all three image files in this folder.
-5. Click Commit changes.
+3. Choose Add file > Upload files.
+4. Upload all files from this extracted folder, including the three image assets.
+5. Commit changes.
 6. Open https://kirancreation.github.io/kiran-creations-frame-studio/ and press Ctrl+F5.
-
-Important: keep the three image assets in the repository root next to index.html. This is a static browser-only website.

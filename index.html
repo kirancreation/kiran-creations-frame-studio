@@ -70,11 +70,7 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
     <div class="field"><label for="photo">১. প্রথম ছবি আপলোড করুন</label><input id="photo" type="file" accept="image/*"><div class="hint">প্রথম ছবি জুম ও সরানোর নিয়ন্ত্রণ ব্যবহার করতে পারবেন।</div></div>
     <div class="field"><label for="photo2">২. দ্বিতীয় ছবি আলাদাভাবে আপলোড করুন</label><input id="photo2" type="file" accept="image/*"><div class="hint">দ্বিতীয় ছবি আলাদা ঘরে বসবে।</div></div>
     <div class="field"><label for="extraText">৩. নতুন লেখা যোগ করুন</label><input id="extraText" type="text" maxlength="100" placeholder="যেমন: শুভ জন্মদিন, নাম বা তারিখ"><div class="hint">এই লেখা প্রিভিউ ও PNG-তে দেখা যাবে।</div></div>
-    <div class="field"><label for="clipart">৪. Clipart বেছে নিন</label><select id="clipart"><option value="">কোনো Clipart নয়</option><option value="🌸">🌸 ফুল</option><option value="❤️">❤️ হার্ট</option><option value="🪔">🪔 প্রদীপ</option><option value="🌺">🌺 জবা ফুল</option><option value="✨">✨ ঝিলিক</option><option value="🎉">🎉 উদযাপন</option><option value="🧸">🧸 টেডি</option><option value="🦋">🦋 প্রজাপতি</option><option value="❋">❋ বাঙালিয়ানা নকশা</option></select><div class="hint">Clipart বেছে নিয়ে নিচের নিয়ন্ত্রণ বা প্রিভিউতে টেনে সরান।</div></div>
-    <div class="field"><label for="activeLayer">কোন জিনিসটি সরাবেন / জুম করবেন?</label><select id="activeLayer"><option value="photo2">দ্বিতীয় ছবি</option><option value="text">নতুন লেখা</option><option value="clipart">Clipart</option></select><div class="hint">প্রিভিউয়ের ওপর মাউস/আঙুল চেপে ধরে টানলে নির্বাচিত জিনিসটি সরবে।</div></div>
-    <div class="field"><label for="layerZoom">নির্বাচিত জিনিস ছোট-বড় (Zoom)</label><input id="layerZoom" type="range" min="0.5" max="3" step="0.05" value="1"><div class="hint">জুম: <span id="layerZoomValue">100%</span></div></div>
-    <div class="field"><label for="layerX">নির্বাচিত জিনিস ডানে-বাঁয়ে</label><input id="layerX" type="range" min="-1" max="1" step="0.02" value="0"></div>
-    <div class="field"><label for="layerY">নির্বাচিত জিনিস ওপরে-নিচে</label><input id="layerY" type="range" min="-1" max="1" step="0.02" value="0"></div>
+    <div class="field"><label for="clipart">৪. Clipart বেছে নিন</label><select id="clipart"><option value="">কোনো Clipart নয়</option><option value="🌸">🌸 ফুল</option><option value="❤️">❤️ হার্ট</option><option value="🪔">🪔 প্রদীপ</option><option value="🌺">🌺 জবা ফুল</option><option value="✨">✨ ঝিলিক</option><option value="🎉">🎉 উদযাপন</option><option value="🧸">🧸 টেডি</option><option value="🦋">🦋 প্রজাপতি</option><option value="❋">❋ বাঙালিয়ানা নকশা</option></select></div>
     <div class="field photo-adjust"><label for="photoZoom">প্রথম ছবি ছোট-বড় করুন (জুম)</label><input id="photoZoom" type="range" min="1" max="3" step="0.05" value="1"><div class="hint">জুম: <span id="zoomValue">100%</span></div></div>
     <div class="field photo-adjust"><label for="photoX">ছবি ডানে-বাঁয়ে সরান</label><input id="photoX" type="range" min="-1" max="1" step="0.02" value="0"></div>
     <div class="field photo-adjust"><label for="photoY">ছবি ওপরে-নিচে সরান</label><input id="photoY" type="range" min="-1" max="1" step="0.02" value="0"></div>
@@ -112,9 +108,6 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
  const canvas=document.getElementById('art'), ctx=canvas.getContext('2d');
  const photoInput=document.getElementById('photo'), photo2Input=document.getElementById('photo2'), nameInput=document.getElementById('personName'), msgInput=document.getElementById('message'), extraTextInput=document.getElementById('extraText'), clipartInput=document.getElementById('clipart');
  let chosen='red', photo=null, photo2=null, photoZoom=1, photoX=0, photoY=0;
- const layerState={photo2:{zoom:1,x:0,y:0},text:{zoom:1,x:0,y:0},clipart:{zoom:1,x:0,y:0}};
- const activeLayer=document.getElementById('activeLayer'), layerZoom=document.getElementById('layerZoom'), layerX=document.getElementById('layerX'), layerY=document.getElementById('layerY');
- let selectedLayer='photo2';
  const milestoneFrame=new Image();
  milestoneFrame.onload=()=>{if(chosen==='milestone')draw();};
  milestoneFrame.src='baby-milestone.png';
@@ -193,9 +186,9 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
  function draw(){
   drawBase();
   const w=canvas.width,h=canvas.height;
-  if(photo2){const st=layerState.photo2,x=w*.665,y=h*.705,bw=w*.245,bh=h*.165;ctx.save();ctx.fillStyle='#fff';ctx.fillRect(x-12,y-12,bw+24,bh+24);ctx.strokeStyle=palettes[chosen].gold;ctx.lineWidth=9;ctx.strokeRect(x-12,y-12,bw+24,bh+24);ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.clip();const scale=Math.max(bw/photo2.width,bh/photo2.height)*st.zoom,dw=photo2.width*scale,dh=photo2.height*scale,dx=x+(bw-dw)/2+st.x*Math.max(0,dw-bw)/2,dy=y+(bh-dh)/2+st.y*Math.max(0,dh-bh)/2;ctx.drawImage(photo2,dx,dy,dw,dh);ctx.restore();if(selectedLayer==='photo2'){ctx.save();ctx.strokeStyle='#1687ff';ctx.lineWidth=4;ctx.setLineDash([12,8]);ctx.strokeRect(x-15,y-15,bw+30,bh+30);ctx.restore();}}
-  const extra=extraTextInput.value.trim();if(extra){const st=layerState.text,tx=w*(.5+st.x*.35),ty=h*(.91+st.y*.35);ctx.save();ctx.translate(tx,ty);ctx.scale(st.zoom,st.zoom);ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`700 ${fitText(extra,w*.78,48)}px "Noto Sans Bengali", sans-serif`;ctx.lineWidth=7;ctx.strokeStyle='#fff';ctx.strokeText(extra,0,0,w*.82);ctx.fillStyle=palettes[chosen].dark;ctx.fillText(extra,0,0,w*.82);if(selectedLayer==='text'){ctx.strokeStyle='#1687ff';ctx.lineWidth=3;ctx.setLineDash([10,7]);ctx.strokeRect(-w*.4,-42,w*.8,84);}ctx.restore();}
-  const art=clipartInput.value;if(art){const st=layerState.clipart,ax=w*(.87+st.x*.35),ay=h*(.87+st.y*.35);ctx.save();ctx.translate(ax,ay);ctx.scale(st.zoom,st.zoom);ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='88px sans-serif';ctx.fillText(art,0,0);if(selectedLayer==='clipart'){ctx.strokeStyle='#1687ff';ctx.lineWidth=3;ctx.setLineDash([10,7]);ctx.strokeRect(-58,-58,116,116);}ctx.restore();}
+  if(photo2){const x=w*.665,y=h*.705,bw=w*.245,bh=h*.165;ctx.save();ctx.fillStyle='#fff';ctx.fillRect(x-12,y-12,bw+24,bh+24);ctx.strokeStyle=palettes[chosen].gold;ctx.lineWidth=9;ctx.strokeRect(x-12,y-12,bw+24,bh+24);ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.clip();const ar=photo2.width/photo2.height,tar=bw/bh;let sw,sh,sx,sy;if(ar>tar){sh=photo2.height;sw=sh*tar;sx=(photo2.width-sw)/2;sy=0;}else{sw=photo2.width;sh=sw/tar;sx=0;sy=(photo2.height-sh)/2;}ctx.drawImage(photo2,sx,sy,sw,sh,x,y,bw,bh);ctx.restore();}
+  const extra=extraTextInput.value.trim();if(extra){ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`700 ${fitText(extra,w*.78,48)}px "Noto Sans Bengali", sans-serif`;ctx.lineWidth=7;ctx.strokeStyle='#fff';ctx.strokeText(extra,w*.5,h*.91,w*.82);ctx.fillStyle=palettes[chosen].dark;ctx.fillText(extra,w*.5,h*.91,w*.82);ctx.restore();}
+  const art=clipartInput.value;if(art){ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='88px sans-serif';ctx.fillText(art,w*.87,h*.87);ctx.restore();}
  }
  function loadPhoto(file,which){if(!file)return;if(!file.type.startsWith('image/')){alert('একটি ছবি ফাইল বেছে নিন।');return;}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{if(which===1)photo=im;else photo2=im;draw();};im.src=r.result;};r.readAsDataURL(file);}
  photoInput.addEventListener('change',e=>loadPhoto(e.target.files&&e.target.files[0],1));
@@ -206,21 +199,16 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
  zoomInput.addEventListener('input',()=>{photoZoom=Number(zoomInput.value);syncPhotoControls();draw();});
  xInput.addEventListener('input',()=>{photoX=Number(xInput.value);draw();});
  yInput.addEventListener('input',()=>{photoY=Number(yInput.value);draw();});
- function syncLayerControls(){const st=layerState[selectedLayer];layerZoom.value=st.zoom;layerX.value=st.x;layerY.value=st.y;document.getElementById('layerZoomValue').textContent=Math.round(st.zoom*100)+'%';}
- activeLayer.addEventListener('change',()=>{selectedLayer=activeLayer.value;syncLayerControls();draw();});
- layerZoom.addEventListener('input',()=>{layerState[selectedLayer].zoom=Number(layerZoom.value);syncLayerControls();draw();});
- layerX.addEventListener('input',()=>{layerState[selectedLayer].x=Number(layerX.value);draw();});
- layerY.addEventListener('input',()=>{layerState[selectedLayer].y=Number(layerY.value);draw();});
  let dragging=false,lastPointer=null;
  canvas.style.touchAction='none';canvas.style.cursor='grab';
- canvas.addEventListener('pointerdown',e=>{dragging=true;lastPointer={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';});
- canvas.addEventListener('pointermove',e=>{if(!dragging||!lastPointer)return;const rect=canvas.getBoundingClientRect(),dx=(e.clientX-lastPointer.x)/rect.width*2,dy=(e.clientY-lastPointer.y)/rect.height*2; if(selectedLayer==='photo2'){layerState.photo2.x=Math.max(-1,Math.min(1,layerState.photo2.x+dx));layerState.photo2.y=Math.max(-1,Math.min(1,layerState.photo2.y+dy));}else{layerState[selectedLayer].x=Math.max(-1,Math.min(1,layerState[selectedLayer].x+dx));layerState[selectedLayer].y=Math.max(-1,Math.min(1,layerState[selectedLayer].y+dy));}lastPointer={x:e.clientX,y:e.clientY};syncLayerControls();draw();});
+ canvas.addEventListener('pointerdown',e=>{if(!photo)return;dragging=true;lastPointer={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';});
+ canvas.addEventListener('pointermove',e=>{if(!dragging||!lastPointer)return;const rect=canvas.getBoundingClientRect();photoX=Math.max(-1,Math.min(1,photoX+(e.clientX-lastPointer.x)/rect.width*2));photoY=Math.max(-1,Math.min(1,photoY+(e.clientY-lastPointer.y)/rect.height*2));lastPointer={x:e.clientX,y:e.clientY};syncPhotoControls();draw();});
  const stopDrag=()=>{dragging=false;lastPointer=null;canvas.style.cursor='grab';};
  canvas.addEventListener('pointerup',stopDrag);canvas.addEventListener('pointercancel',stopDrag);
  nameInput.addEventListener('input',draw);msgInput.addEventListener('input',draw);
  document.querySelectorAll('.template').forEach(b=>b.addEventListener('click',()=>{chosen=b.dataset.style;document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x===b));draw();}));
  document.getElementById('download').addEventListener('click',()=>{draw();canvas.toBlob(blob=>{if(!blob){alert('ডাউনলোড তৈরি করা যায়নি। আবার চেষ্টা করুন।');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='kiran-creations-bengali-frame.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);},'image/png');});
- document.getElementById('reset').addEventListener('click',()=>{photo=null;photo2=null;photoInput.value='';photo2Input.value='';extraTextInput.value='';clipartInput.value='';photoZoom=1;photoX=0;photoY=0;Object.keys(layerState).forEach(k=>{layerState[k]={zoom:1,x:0,y:0};});selectedLayer='photo2';activeLayer.value='photo2';syncLayerControls();syncPhotoControls();nameInput.value='শুভ অন্নপ্রাশন';msgInput.value='অনেক ভালোবাসা ও আশীর্বাদ';chosen='red';document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x.dataset.style==='red'));draw();});
+ document.getElementById('reset').addEventListener('click',()=>{photo=null;photo2=null;photoInput.value='';photo2Input.value='';extraTextInput.value='';clipartInput.value='';photoZoom=1;photoX=0;photoY=0;syncPhotoControls();nameInput.value='শুভ অন্নপ্রাশন';msgInput.value='অনেক ভালোবাসা ও আশীর্বাদ';chosen='red';document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x.dataset.style==='red'));draw();});
  draw();
 })();
 </script>
