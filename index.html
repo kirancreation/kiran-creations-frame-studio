@@ -49,6 +49,14 @@ canvas { display:block; width:min(100%,620px); height:auto; max-height:75vh; obj
 .feature { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:15px; }
 .feature b { display:block; font-size:13px; margin-bottom:5px; }
 .feature span { color:var(--muted); font-size:11px; line-height:1.5; }
+.tools-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.tool-box { border:1px solid var(--line); border-radius:12px; padding:12px; background:var(--bg); margin-bottom:12px; }
+.tool-box label { margin-top:8px; }
+.tool-box input[type=range] { width:100%; accent-color:var(--accent); }
+.tool-box input[type=color] { width:100%; height:38px; border:0; background:transparent; }
+.tool-box button { margin:3px 2px 0 0; }
+.full { grid-column:1/-1; }
+.template[hidden] { display:none; }
 footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); color:var(--muted); font-size:11px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
 @media(max-width:800px){main{grid-template-columns:1fr}.features{grid-template-columns:1fr}.header-tag{display:none}.canvas-wrap{min-height:240px}.panel{padding:15px}}
 </style>
@@ -67,31 +75,25 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
 <main>
   <section class="panel">
     <h3>✦ আপনার ডিজাইন তৈরি করুন</h3>
-    <div class="field"><label for="photo">১. প্রথম ছবি আপলোড করুন</label><input id="photo" type="file" accept="image/*"><div class="hint">প্রথম ছবি জুম ও সরানোর নিয়ন্ত্রণ ব্যবহার করতে পারবেন।</div></div>
-    <div class="field"><label for="photo2">২. দ্বিতীয় ছবি আলাদাভাবে আপলোড করুন</label><input id="photo2" type="file" accept="image/*"><div class="hint">দ্বিতীয় ছবি আলাদা ঘরে বসবে।</div></div>
-    <div class="field"><label for="extraText">৩. নতুন লেখা যোগ করুন</label><input id="extraText" type="text" maxlength="100" placeholder="যেমন: শুভ জন্মদিন, নাম বা তারিখ"><div class="hint">এই লেখা প্রিভিউ ও PNG-তে দেখা যাবে।</div></div>
-    <div class="field"><label for="clipart">৪. Clipart বেছে নিন</label><select id="clipart"><option value="">কোনো Clipart নয়</option><option value="🌸">🌸 ফুল</option><option value="❤️">❤️ হার্ট</option><option value="🪔">🪔 প্রদীপ</option><option value="🌺">🌺 জবা ফুল</option><option value="✨">✨ ঝিলিক</option><option value="🎉">🎉 উদযাপন</option><option value="🧸">🧸 টেডি</option><option value="🦋">🦋 প্রজাপতি</option><option value="❋">❋ বাঙালিয়ানা নকশা</option></select><div class="hint">Clipart বেছে নিয়ে নিচের নিয়ন্ত্রণ বা প্রিভিউতে টেনে সরান।</div></div>
-    <div class="field"><label for="activeLayer">কোন জিনিসটি সরাবেন / জুম করবেন?</label><select id="activeLayer"><option value="photo2">দ্বিতীয় ছবি</option><option value="text">নতুন লেখা</option><option value="clipart">Clipart</option></select><div class="hint">প্রিভিউতে টেনে নির্বাচিত জিনিস সরান। TEXT বদলাতে আগে “নতুন লেখা” নির্বাচন করে প্রিভিউতে ডাবল-ক্লিক করুন।</div></div>
-    <div class="field"><label for="layerZoom">নির্বাচিত জিনিস ছোট-বড় (Zoom)</label><input id="layerZoom" type="range" min="0.5" max="3" step="0.05" value="1"><div class="hint">জুম: <span id="layerZoomValue">100%</span></div></div>
-    <div class="field"><label for="layerX">নির্বাচিত জিনিস ডানে-বাঁয়ে</label><input id="layerX" type="range" min="-1" max="1" step="0.02" value="0"></div>
-    <div class="field"><label for="layerY">নির্বাচিত জিনিস ওপরে-নিচে</label><input id="layerY" type="range" min="-1" max="1" step="0.02" value="0"></div>
-    <div class="field photo-adjust"><label for="photoZoom">প্রথম ছবি ছোট-বড় করুন (জুম)</label><input id="photoZoom" type="range" min="1" max="3" step="0.05" value="1"><div class="hint">জুম: <span id="zoomValue">100%</span></div></div>
-    <div class="field photo-adjust"><label for="photoX">ছবি ডানে-বাঁয়ে সরান</label><input id="photoX" type="range" min="-1" max="1" step="0.02" value="0"></div>
-    <div class="field photo-adjust"><label for="photoY">ছবি ওপরে-নিচে সরান</label><input id="photoY" type="range" min="-1" max="1" step="0.02" value="0"></div>
-    <div class="hint">প্রিভিউ ছবির ওপর মাউস চেপে ধরে টানলেও ছবি সরাতে পারবেন। এই নিয়ন্ত্রণ সব ছবির ঘরে একইভাবে প্রয়োগ হবে।</div>
-    <div class="field"><label for="personName">৫. নাম লিখুন</label><input id="personName" type="text" maxlength="50" placeholder="যেমন: শুভ অন্নপ্রাশন" value="শুভ অন্নপ্রাশন"></div>
-    <div class="field"><label for="message">৬. নিচের শুভেচ্ছাবার্তা</label><input id="message" type="text" maxlength="70" placeholder="আপনার শুভেচ্ছা লিখুন" value="অনেক ভালোবাসা ও আশীর্বাদ"></div>
-    <div class="field"><label>৭. ফ্রেম বেছে নিন</label><div class="templates" id="templates">
+    <div class="field"><label for="photo">১. নিজের ছবি আপলোড করুন</label><input id="photo" type="file" accept="image/*"><div class="hint">JPG বা PNG ছবি ব্যবহার করুন। ছবিটি এই প্রিভিউতেই প্রসেস হয়।</div></div>
+    <div class="field"><label for="personName">২. নাম লিখুন</label><input id="personName" type="text" maxlength="50" placeholder="যেমন: শুভ অন্নপ্রাশন" value="শুভ অন্নপ্রাশন"></div>
+    <div class="field"><label for="message">৩. নিচের শুভেচ্ছাবার্তা</label><input id="message" type="text" maxlength="70" placeholder="আপনার শুভেচ্ছা লিখুন" value="অনেক ভালোবাসা ও আশীর্বাদ"></div>
+    <div class="tool-box"><label for="frameSearch">ফ্রেম খুঁজুন</label><input id="frameSearch" type="text" placeholder="যেমন: বেবি, ফ্লোরাল, রয়্যাল"><label for="frameCategory">ক্যাটাগরি</label><select id="frameCategory"><option value="all">সব ফ্রেম</option><option value="festive">বাঙালিয়ানা / উৎসব</option><option value="floral">ফ্লোরাল</option><option value="baby">বেবি</option><option value="royal">রয়্যাল / এলিগ্যান্ট</option></select></div>
+    <div class="field"><label>৪. ফ্রেম বেছে নিন</label><div class="templates" id="templates">
       <button class="template active" data-style="red"><div class="swatch" style="background:linear-gradient(135deg,#7e1820,#d4a34f);color:#fff2d4">❋</div><strong>বাঙালিয়ানা</strong><small>লাল ও সোনালি</small></button>
       <button class="template" data-style="floral"><div class="swatch" style="background:linear-gradient(135deg,#fbe7e7,#d9a1aa);color:#8d354a">✿</div><strong>ফ্লোরাল</strong><small>গোলাপি ফুল</small></button>
       <button class="template" data-style="royal"><div class="swatch" style="background:linear-gradient(135deg,#173c31,#c6a45e);color:#fff2c8">❈</div><strong>রয়্যাল</strong><small>সবুজ ও সোনালি</small></button>
       <button class="template" data-style="blue"><div class="swatch" style="background:linear-gradient(135deg,#dcecf5,#7199b7);color:#244e6a">✧</div><strong>এলিগ্যান্ট</strong><small>নীল ও রুপালি</small></button>
       <button class="template" data-style="baby"><div class="swatch" style="background:linear-gradient(135deg,#d9f4ff,#56c8ee);color:#075c94">♡</div><strong>বেবি অ্যানাউন্সমেন্ট</strong><small>আকাশি নীল · A4</small></button>
-      <button class="template" data-style="milestone"><div class="swatch" style="background:linear-gradient(135deg,#e7faff,#25b9e7);color:#064d83">🧸</div><strong>বেবি মাইলস্টোন</strong><small>আপনার নিজস্ব ডিজাইন</small></button>
-      <button class="template" data-style="love"><div class="swatch" style="background:linear-gradient(135deg,#071e19,#ed478d);color:#fff">♥</div><strong>লাভ বার্থডে কোলাজ</strong><small>৬টি ছবির ফ্রেম</small></button>
-      <button class="template" data-style="durga"><div class="swatch" style="background:linear-gradient(135deg,#fff0c8,#b91e24);color:#fff">🪔</div><strong>দুর্গাপূজা বাঙালিয়ানা</strong><small>নিজস্ব ব্যাকগ্রাউন্ড</small></button>
+      <button class="template" data-style="milestone"><div class="swatch" style="background:linear-gradient(135deg,#e7faff,#25b9e7);color:#064d83">🧸</div><strong>বেবি মাইলস্টোন</strong><small>নিজস্ব ডিজাইন · আকাশি নীল</small></button>
     </div></div>
+    <div class="tool-box"><h3>ছবি ও ডিজাইন টুলস</h3><div class="field"><label for="photo2">দ্বিতীয় ছবি যোগ করুন</label><input id="photo2" type="file" accept="image/*"><div class="hint">অতিরিক্ত ছবি প্রিভিউতে ছোট করে যোগ হবে।</div></div><div class="field"><label for="photoZoom">ছবির জুম</label><input id="photoZoom" type="range" min="70" max="160" value="100"><div class="hint">জুম পরিবর্তন করতে ছবির নিয়ন্ত্রণ ব্যবহার করুন।</div></div><div class="field"><label for="extraText">নতুন লেখা যোগ করুন</label><input id="extraText" type="text" maxlength="80" placeholder="এখানে নতুন লেখা লিখুন"><label for="extraColor">লেখার রং</label><input id="extraColor" type="color" value="#9f252d"><label for="extraSize">লেখার সাইজ</label><input id="extraSize" type="range" min="18" max="72" value="36"></div><div class="field"><label>স্টিকার / ক্লিপআর্ট</label><div><button class="secondary sticker" data-sticker="🌸">🌸 ফুল</button><button class="secondary sticker" data-sticker="🪔">🪔 প্রদীপ</button><button class="secondary sticker" data-sticker="🐚">🐚 শঙ্খ</button><button class="secondary sticker" data-sticker="❋">❋ আলপনা</button><button class="secondary" id="clearSticker">স্টিকার সরান</button></div></div><div class="field"><label for="bgColor">ব্যাকগ্রাউন্ডের রং</label><input id="bgColor" type="color" value="#fff4df"></div><div class="field"><label><input id="watermark" type="checkbox" checked> Kiran Creations ওয়াটারমার্ক</label></div><div class="actions"><button class="secondary" id="undo">↶ Undo</button><button class="secondary" id="redo">↷ Redo</button><button class="secondary" id="saveDesign">ডিজাইন সেভ</button><button class="secondary" id="loadDesign">সেভ করা ডিজাইন খুলুন</button></div></div>
+    <div class="field"><label for="photo3">তৃতীয় ছবি আপলোড করুন</label><input id="photo3" type="file" accept="image/*"></div>
+    <div class="field"><label for="photo4">চতুর্থ ছবি আপলোড করুন</label><input id="photo4" type="file" accept="image/*"></div>
+    <div class="field"><label for="photo5">পঞ্চম ছবি আপলোড করুন</label><input id="photo5" type="file" accept="image/*"></div>
+    <div class="field"><label for="photo6">ষষ্ঠ ছবি আপলোড করুন</label><input id="photo6" type="file" accept="image/*"></div>
     <div class="actions"><button class="primary" id="download">↓ PNG ডাউনলোড</button><button class="secondary" id="reset">রিসেট</button></div>
+    <div class="actions"><button class="secondary" id="downloadPdf">PDF / প্রিন্ট</button><button class="secondary" id="whatsappOrder">WhatsApp-এ অর্ডার</button></div>
     <div class="hint">এটি প্রোটোটাইপ। এখানে অনলাইন পেমেন্ট বা পেইড ডাউনলোড চালু নেই।</div>
   </section>
   <section class="preview-panel">
@@ -110,53 +112,24 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
 <script>
 (() => {
  const canvas=document.getElementById('art'), ctx=canvas.getContext('2d');
- const photoInput=document.getElementById('photo'), photo2Input=document.getElementById('photo2'), nameInput=document.getElementById('personName'), msgInput=document.getElementById('message'), extraTextInput=document.getElementById('extraText'), clipartInput=document.getElementById('clipart');
- let chosen='red', photo=null, photo2=null, photoZoom=1, photoX=0, photoY=0;
- const layerState={photo2:{zoom:1,x:0,y:0},text:{zoom:1,x:0,y:0},clipart:{zoom:1,x:0,y:0}};
- const activeLayer=document.getElementById('activeLayer'), layerZoom=document.getElementById('layerZoom'), layerX=document.getElementById('layerX'), layerY=document.getElementById('layerY');
- let selectedLayer='photo2';
- const milestoneFrame=new Image();
- milestoneFrame.onload=()=>{if(chosen==='milestone')draw();};
- milestoneFrame.src='baby-milestone.png';
- const loveFrame=new Image(); loveFrame.src='love-birthday-calendar.jpg';
- const durgaFrame=new Image(); durgaFrame.onload=()=>{if(chosen==='durga')draw();}; durgaFrame.src='durga-puja-bengali-frame.png';
- loveFrame.onload=()=>{if(chosen==='love')draw();};
- const palettes={red:{bg:'#fff4df',dark:'#811f28',gold:'#c79b45',ink:'#6d2027',pale:'#f6dfb0'},floral:{bg:'#fff5f6',dark:'#9c4b62',gold:'#d7a0ac',ink:'#79344a',pale:'#f6dce3'},royal:{bg:'#f3f0df',dark:'#1e4a3b',gold:'#c7a65a',ink:'#204538',pale:'#e1d7a9'},blue:{bg:'#f1f7fb',dark:'#345d7b',gold:'#9cb8cc',ink:'#274c67',pale:'#d9e9f2'},baby:{bg:'#ffffff',dark:'#087bb7',gold:'#39c4d4',ink:'#064d83',pale:'#d9f4ff'},milestone:{bg:'#ffffff',dark:'#087bb7',gold:'#39c4d4',ink:'#064d83',pale:'#d9f4ff'},love:{bg:'#071e19',dark:'#ed478d',gold:'#c79b45',ink:'#fff',pale:'#ed478d'},durga:{bg:'#fff2d0',dark:'#b91e24',gold:'#c79b45',ink:'#81201b',pale:'#fff2d0'}};
+ const photoInput=document.getElementById('photo'), nameInput=document.getElementById('personName'), msgInput=document.getElementById('message');
+ const photo2Input=document.getElementById('photo2'), extraPhotoInputs=[document.getElementById('photo3'),document.getElementById('photo4'),document.getElementById('photo5'),document.getElementById('photo6')]; let chosen='red', photo=null, photo2=null, extraPhotos=[null,null,null,null], extraSticker='', extraTextValue='', history=[], historyAt=-1, zoomFactor=1, photoPanX=0, photoPanY=0, photo2X=null, photo2Y=null, dragState=null, extraColor='#9f252d', extraSize=36, bgColor='#fff4df', watermark=true;
+ const palettes={red:{bg:'#fff4df',dark:'#811f28',gold:'#c79b45',ink:'#6d2027',pale:'#f6dfb0'},floral:{bg:'#fff5f6',dark:'#9c4b62',gold:'#d7a0ac',ink:'#79344a',pale:'#f6dce3'},royal:{bg:'#f3f0df',dark:'#1e4a3b',gold:'#c7a65a',ink:'#204538',pale:'#e1d7a9'},blue:{bg:'#f1f7fb',dark:'#345d7b',gold:'#9cb8cc',ink:'#274c67',pale:'#d9e9f2'},baby:{bg:'#ffffff',dark:'#087bb7',gold:'#39c4d4',ink:'#064d83',pale:'#d9f4ff'},milestone:{bg:'#ffffff',dark:'#087bb7',gold:'#39c4d4',ink:'#064d83',pale:'#d9f4ff'}};
  function fitText(text,maxWidth,size){let s=size;ctx.font=`700 ${s}px "Noto Sans Bengali", sans-serif`;while(ctx.measureText(text).width>maxWidth&&s>22){s-=2;ctx.font=`700 ${s}px "Noto Sans Bengali", sans-serif`;}return s;}
- function drawPhotoCrop(img,x,y,width,height){
-  if(!img)return;
-  const scale=Math.max(width/img.width,height/img.height)*photoZoom;
-  const dw=img.width*scale,dh=img.height*scale;
-  const dx=x+(width-dw)/2+photoX*Math.max(0,dw-width)/2;
-  const dy=y+(height-dh)/2+photoY*Math.max(0,dh-height)/2;
-  ctx.drawImage(img,dx,dy,dw,dh);
- }
- function drawBase(){
+ function draw(){
   const p=palettes[chosen],w=canvas.width,h=canvas.height;
-  ctx.clearRect(0,0,w,h);ctx.fillStyle=p.bg;ctx.fillRect(0,0,w,h);
+  ctx.clearRect(0,0,w,h);ctx.fillStyle=bgColor||p.bg;ctx.fillRect(0,0,w,h);
   if(chosen==='milestone'){
    ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);
-   const drawPhotoCircle=(cx,cy,rx,ry)=>{
-    if(!photo)return;
-    ctx.save();ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);ctx.clip();
-    drawPhotoCrop(photo,cx-rx,cy-ry,rx*2,ry*2);ctx.restore();
-   };
-   // Photo appears in the two portrait openings of the supplied design.
-   drawPhotoCircle(w*0.487, h*0.398, w*0.153, h*0.116);
-   drawPhotoCircle(w*0.783, h*0.835, w*0.107, h*0.078);
-   if(milestoneFrame.complete && milestoneFrame.naturalWidth){ctx.drawImage(milestoneFrame,0,0,w,h);}
-   else {ctx.fillStyle='#087bb7';ctx.font='700 32px sans-serif';ctx.textAlign='center';ctx.fillText('Baby Milestone design is loading…',w/2,h/2);}
-   return;
-  }
-  if(chosen==='love'){
-   if(loveFrame.complete&&loveFrame.naturalWidth)ctx.drawImage(loveFrame,0,0,w,h);else{ctx.fillStyle='#071e19';ctx.fillRect(0,0,w,h);}
-   if(photo){const slots=[[w*.523,h*.335,w*.263,h*.228],[w*.804,h*.369,w*.282,h*.235],[w*.523,h*.539,w*.263,h*.185],[w*.802,h*.574,w*.281,h*.217],[w*.214,h*.704,w*.318,h*.176],[w*.516,h*.716,w*.270,h*.184]];slots.forEach(([cx,cy,rx,ry])=>{ctx.save();ctx.beginPath();ctx.rect(cx-rx,cy-ry,rx*2,ry*2);ctx.clip();drawPhotoCrop(photo,cx-rx,cy-ry,rx*2,ry*2);ctx.restore();});}
-   return;
-  }
-  if(chosen==='durga'){
-   if(durgaFrame.complete&&durgaFrame.naturalWidth)ctx.drawImage(durgaFrame,0,0,w,h);else{ctx.fillStyle='#fff2d0';ctx.fillRect(0,0,w,h);}
-   if(photo){const x=w*.19,y=h*.235,bw=w*.55,bh=h*.48;ctx.save();ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.clip();drawPhotoCrop(photo,x,y,bw,bh);ctx.restore();}
-   return;
+   // Pastel-blue baby milestone layout inspired by the customer's supplied design.
+   ctx.strokeStyle='#111';ctx.lineWidth=20;ctx.strokeRect(12,12,w-24,h-24);ctx.strokeStyle='#bdeefa';ctx.lineWidth=7;ctx.strokeRect(34,34,w-68,h-68);
+   function cloud(x,y,r){ctx.fillStyle='#b9eaff';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.arc(x+r*.8,y-r*.35,r*.8,0,Math.PI*2);ctx.arc(x+r*1.5,y,r*.9,0,Math.PI*2);ctx.fill();}
+   cloud(80,100,95);cloud(w-245,120,115);cloud(w-120,760,90);cloud(95,h-230,110);cloud(w-150,h-170,85);
+   ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#087bb7';ctx.font='700 38px sans-serif';ctx.fillText('BABY MILESTONE',w/2,160);
+   ctx.fillStyle='#e7faff';ctx.beginPath();ctx.arc(w*.49,h*.40,235,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#39c4d4';ctx.lineWidth=18;ctx.stroke();ctx.strokeStyle='#fff';ctx.lineWidth=7;ctx.stroke();
+   if(photo){const s=Math.min(photo.width,photo.height)/zoomFactor,sx=Math.max(0,Math.min(photo.width-s,(photo.width-s)/2+photoPanX)),sy=Math.max(0,Math.min(photo.height-s,(photo.height-s)/2+photoPanY));ctx.save();ctx.beginPath();ctx.arc(w*.49,h*.40,205,0,Math.PI*2);ctx.clip();ctx.drawImage(photo,sx,sy,s,s,w*.49-205,h*.40-205,410,410);ctx.restore();}else{ctx.fillStyle='#064d83';ctx.font='700 32px sans-serif';ctx.fillText('আপনার শিশুর ছবি',w*.49,h*.40);}
+   ctx.textAlign='left';ctx.fillStyle='#064d83';ctx.font='700 32px sans-serif';ctx.fillText('Born In:',85,h*.33);ctx.fillText('Blood Group:',65,h*.58);ctx.fillText('Weight:',80,h*.78);ctx.textAlign='right';ctx.fillText('Born Time:',w-75,h*.39);ctx.fillText('Height:',w-90,h*.62);
+   ctx.textAlign='center';ctx.fillStyle='#087bb7';ctx.font='700 34px sans-serif';ctx.fillText(nameInput.value.trim()||'শুভ জন্মদিন',w/2,h*.91);ctx.font='600 26px sans-serif';ctx.fillText(msgInput.value.trim()||'Mom & Dad',w/2,h*.95);return;
   }
   if(chosen==='baby'){
    ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#111';ctx.lineWidth=22;ctx.strokeRect(12,12,w-24,h-24);ctx.strokeStyle='#bdeefa';ctx.lineWidth=7;ctx.strokeRect(35,35,w-70,h-70);
@@ -167,7 +140,7 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
    ctx.font='700 30px sans-serif';ctx.fillStyle='#087bb7';ctx.textAlign='left';ctx.fillText('Born In:',95,570);ctx.fillText('Blood Group:',75,1030);ctx.fillText('Weight:',90,1400);ctx.textAlign='right';ctx.fillText('Born Time:',w-85,680);ctx.fillText('Height:',w-95,1170);
    ctx.textAlign='center';ctx.font='700 34px sans-serif';ctx.fillStyle='#111';ctx.fillText('DATE: __________________',235,655);ctx.fillText('TIME: __________',w-240,800);ctx.fillText('GROUP: ______',245,1160);ctx.fillText('HEIGHT: ______',w-230,1310);ctx.fillText('WEIGHT: ______',235,1510);
    ctx.fillStyle='#dff8ff';ctx.beginPath();ctx.arc(w/2,750,255,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#36c5d4';ctx.lineWidth=18;ctx.stroke();ctx.strokeStyle='#fff';ctx.lineWidth=8;ctx.stroke();
-   if(photo){ctx.save();ctx.beginPath();ctx.arc(w/2,750,220,0,Math.PI*2);ctx.clip();drawPhotoCrop(photo,w/2-220,530,440,440);ctx.restore();}else{ctx.fillStyle='#087bb7';ctx.font='700 34px sans-serif';ctx.fillText('YOUR BABY PHOTO',w/2,750);}
+   if(photo){const s=Math.min(photo.width,photo.height)/zoomFactor,sx=Math.max(0,Math.min(photo.width-s,(photo.width-s)/2+photoPanX)),sy=Math.max(0,Math.min(photo.height-s,(photo.height-s)/2+photoPanY));ctx.save();ctx.beginPath();ctx.arc(w/2,750,220,0,Math.PI*2);ctx.clip();ctx.drawImage(photo,sx,sy,s,s,w/2-220,530,440,440);ctx.restore();}else{ctx.fillStyle='#087bb7';ctx.font='700 34px sans-serif';ctx.fillText('YOUR BABY PHOTO',w/2,750);}
    ctx.fillStyle='#fff';ctx.strokeStyle='#ee4769';ctx.lineWidth=12;ctx.beginPath();ctx.arc(w-270,h-285,150,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#087bb7';ctx.font='700 28px sans-serif';ctx.fillText('MOM & DAD',w/2,1610);ctx.fillStyle='#111';ctx.font='700 24px sans-serif';ctx.fillText('________________________',w/2,1660);ctx.fillStyle='#087bb7';ctx.font='700 22px sans-serif';ctx.fillText('Kiran Creations · A4 Frame',w/2,h-75);return;
   }
   // subtle paper texture lines
@@ -183,46 +156,50 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
   // photo mat and image area
   const bx=180,by=290,bw=w-360,bh=990;
   ctx.fillStyle='#ffffff';ctx.fillRect(bx-18,by-18,bw+36,bh+36);ctx.strokeStyle=p.gold;ctx.lineWidth=9;ctx.strokeRect(bx-18,by-18,bw+36,bh+36);ctx.strokeStyle=p.dark;ctx.lineWidth=3;ctx.strokeRect(bx,by,bw,bh);
-  if(photo){ctx.save();ctx.beginPath();ctx.rect(bx,by,bw,bh);ctx.clip();drawPhotoCrop(photo,bx,by,bw,bh);ctx.restore();}
+  if(photo){const ar=photo.width/photo.height,tar=bw/bh;let sw,sh,sx,sy;if(ar>tar){sh=photo.height;sw=sh*tar/zoomFactor;sx=Math.max(0,Math.min(photo.width-sw,(photo.width-sw)/2+photoPanX));sy=Math.max(0,Math.min(photo.height-sh,(photo.height-sh)/2+photoPanY));}else{sw=photo.width;sh=sw/tar/zoomFactor;sx=Math.max(0,Math.min(photo.width-sw,(photo.width-sw)/2+photoPanX));sy=Math.max(0,Math.min(photo.height-sh,(photo.height-sh)/2+photoPanY));}ctx.save();ctx.beginPath();ctx.rect(bx,by,bw,bh);ctx.clip();ctx.drawImage(photo,sx,sy,sw,sh,bx,by,bw,bh);ctx.restore();}
   else {ctx.fillStyle='#f4eee5';ctx.fillRect(bx,by,bw,bh);ctx.strokeStyle=p.pale;ctx.lineWidth=4;for(let i=0;i<6;i++){ctx.beginPath();ctx.arc(w/2,by+bh/2,70+i*54,0,Math.PI*2);ctx.stroke();}ctx.fillStyle=p.ink;ctx.font='700 46px "Noto Sans Bengali", sans-serif';ctx.fillText('এখানে আপনার ছবি বসবে',w/2,by+bh/2-10);ctx.font='28px sans-serif';ctx.fillText('UPLOAD YOUR PHOTO',w/2,by+bh/2+55);}
   const msg=msgInput.value.trim();ctx.fillStyle=p.dark;ctx.font=`600 ${fitText(msg,w-180,42)}px "Noto Sans Bengali", sans-serif`;ctx.fillText(msg,w/2,by+bh+115);
   ctx.fillStyle=p.gold;ctx.font='700 34px sans-serif';ctx.fillText('✦  ✦  ✦',w/2,by+bh+185);
   ctx.fillStyle=p.ink;ctx.font='600 26px "Noto Sans Bengali", sans-serif';ctx.fillText('Kiran Creations',w/2,h-130);
   ctx.fillStyle=p.dark;ctx.font='22px sans-serif';ctx.fillText('Bengali Frame Studio',w/2,h-92);
  }
- function draw(){
-  drawBase();
-  const w=canvas.width,h=canvas.height;
-  if(photo2){const st=layerState.photo2,x=w*.665,y=h*.705,bw=w*.245,bh=h*.165;ctx.save();ctx.fillStyle='#fff';ctx.fillRect(x-12,y-12,bw+24,bh+24);ctx.strokeStyle=palettes[chosen].gold;ctx.lineWidth=9;ctx.strokeRect(x-12,y-12,bw+24,bh+24);ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.clip();const scale=Math.max(bw/photo2.width,bh/photo2.height)*st.zoom,dw=photo2.width*scale,dh=photo2.height*scale,dx=x+(bw-dw)/2+st.x*Math.max(0,dw-bw)/2,dy=y+(bh-dh)/2+st.y*Math.max(0,dh-bh)/2;ctx.drawImage(photo2,dx,dy,dw,dh);ctx.restore();if(selectedLayer==='photo2'){ctx.save();ctx.strokeStyle='#1687ff';ctx.lineWidth=4;ctx.setLineDash([12,8]);ctx.strokeRect(x-15,y-15,bw+30,bh+30);ctx.restore();}}
-  const extra=extraTextInput.value.trim();if(extra){const st=layerState.text,tx=w*(.5+st.x*.35),ty=h*(.91+st.y*.35);ctx.save();ctx.translate(tx,ty);ctx.scale(st.zoom,st.zoom);ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`700 ${fitText(extra,w*.78,48)}px "Noto Sans Bengali", sans-serif`;ctx.lineWidth=7;ctx.strokeStyle='#fff';ctx.strokeText(extra,0,0,w*.82);ctx.fillStyle=palettes[chosen].dark;ctx.fillText(extra,0,0,w*.82);if(selectedLayer==='text'){ctx.strokeStyle='#1687ff';ctx.lineWidth=3;ctx.setLineDash([10,7]);ctx.strokeRect(-w*.4,-42,w*.8,84);}ctx.restore();}
-  const art=clipartInput.value;if(art){const st=layerState.clipart,ax=w*(.87+st.x*.35),ay=h*(.87+st.y*.35);ctx.save();ctx.translate(ax,ay);ctx.scale(st.zoom,st.zoom);ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='88px sans-serif';ctx.fillText(art,0,0);if(selectedLayer==='clipart'){ctx.strokeStyle='#1687ff';ctx.lineWidth=3;ctx.setLineDash([10,7]);ctx.strokeRect(-58,-58,116,116);}ctx.restore();}
- }
- function loadPhoto(file,which){if(!file)return;if(!file.type.startsWith('image/')){alert('একটি ছবি ফাইল বেছে নিন।');return;}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{if(which===1)photo=im;else photo2=im;draw();};im.src=r.result;};r.readAsDataURL(file);}
- photoInput.addEventListener('change',e=>loadPhoto(e.target.files&&e.target.files[0],1));
- photo2Input.addEventListener('change',e=>loadPhoto(e.target.files&&e.target.files[0],2));
- extraTextInput.addEventListener('input',draw);clipartInput.addEventListener('change',draw);
- const zoomInput=document.getElementById('photoZoom'), xInput=document.getElementById('photoX'), yInput=document.getElementById('photoY');
- const syncPhotoControls=()=>{zoomInput.value=photoZoom;xInput.value=photoX;yInput.value=photoY;document.getElementById('zoomValue').textContent=Math.round(photoZoom*100)+'%';};
- zoomInput.addEventListener('input',()=>{photoZoom=Number(zoomInput.value);syncPhotoControls();draw();});
- xInput.addEventListener('input',()=>{photoX=Number(xInput.value);draw();});
- yInput.addEventListener('input',()=>{photoY=Number(yInput.value);draw();});
- function syncLayerControls(){const st=layerState[selectedLayer];layerZoom.value=st.zoom;layerX.value=st.x;layerY.value=st.y;document.getElementById('layerZoomValue').textContent=Math.round(st.zoom*100)+'%';}
- activeLayer.addEventListener('change',()=>{selectedLayer=activeLayer.value;syncLayerControls();draw();});
- layerZoom.addEventListener('input',()=>{layerState[selectedLayer].zoom=Number(layerZoom.value);syncLayerControls();draw();});
- layerX.addEventListener('input',()=>{layerState[selectedLayer].x=Number(layerX.value);draw();});
- layerY.addEventListener('input',()=>{layerState[selectedLayer].y=Number(layerY.value);draw();});
- let dragging=false,lastPointer=null;
+ const baseDraw=draw;
+ draw=function(){baseDraw();const w=canvas.width,h=canvas.height;ctx.save();
+  if(photo2){const size=Math.min(w*.24,h*.16),x=photo2X===null?w-size-95:photo2X,y=photo2Y===null?h-size-230:photo2Y;ctx.drawImage(photo2,x,y,size,size);ctx.strokeStyle=palettes[chosen].gold;ctx.lineWidth=7;ctx.strokeRect(x,y,size,size);}
+  if(extraSticker){ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='76px sans-serif';ctx.fillText(extraSticker,w*.82,h*.18);}
+  const extra=document.getElementById('extraText').value.trim();if(extra){ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=extraColor;ctx.font=`700 ${extraSize}px "Noto Sans Bengali",sans-serif`;ctx.fillText(extra,w/2,h*.83,w-150);}
+  if(watermark){ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillStyle='#811f2870';ctx.font='600 22px sans-serif';ctx.fillText('Kiran Creations',w-75,h-55);}
+  ctx.restore();document.getElementById('status').textContent=`A4 অনুপাত · ${canvas.width} × ${canvas.height} · ${Math.round(zoomFactor*100)}% জুম`;
+ };
+ const drawWithSecondPhoto=draw;
+ draw=function(){drawWithSecondPhoto();const w=canvas.width,h=canvas.height,slots=[[65,h*.20],[w*.79,h*.20],[65,h*.67],[w*.79,h*.48]];extraPhotos.forEach((im,i)=>{if(!im)return;const [x,y]=slots[i],bw=w*.14,bh=h*.095,scale=Math.max(bw/im.width,bh/im.height),dw=im.width*scale,dh=im.height*scale;ctx.save();ctx.fillStyle='#fff';ctx.fillRect(x-8,y-8,bw+16,bh+16);ctx.strokeStyle=palettes[chosen].gold;ctx.lineWidth=6;ctx.strokeRect(x-8,y-8,bw+16,bh+16);ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.clip();ctx.drawImage(im,x+(bw-dw)/2,y+(bh-dh)/2,dw,dh);ctx.restore();});};
+ function readImage(file,done){if(!file||!file.type.startsWith('image/'))return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>done(im);im.src=r.result;};r.readAsDataURL(file);}
  canvas.style.touchAction='none';canvas.style.cursor='grab';
- canvas.addEventListener('dblclick',e=>{ if(selectedLayer!=='text') return; e.preventDefault(); const current=extraTextInput.value; const edited=window.prompt('নতুন TEXT লিখুন বা পরিবর্তন করুন:',current); if(edited!==null){extraTextInput.value=edited.slice(0,100);draw();extraTextInput.focus();extraTextInput.select();} });
- canvas.addEventListener('pointerdown',e=>{dragging=true;lastPointer={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';});
- canvas.addEventListener('pointermove',e=>{if(!dragging||!lastPointer)return;const rect=canvas.getBoundingClientRect(),dx=(e.clientX-lastPointer.x)/rect.width*2,dy=(e.clientY-lastPointer.y)/rect.height*2; if(selectedLayer==='photo2'){layerState.photo2.x=Math.max(-1,Math.min(1,layerState.photo2.x+dx));layerState.photo2.y=Math.max(-1,Math.min(1,layerState.photo2.y+dy));}else{layerState[selectedLayer].x=Math.max(-1,Math.min(1,layerState[selectedLayer].x+dx));layerState[selectedLayer].y=Math.max(-1,Math.min(1,layerState[selectedLayer].y+dy));}lastPointer={x:e.clientX,y:e.clientY};syncLayerControls();draw();});
- const stopDrag=()=>{dragging=false;lastPointer=null;canvas.style.cursor='grab';};
- canvas.addEventListener('pointerup',stopDrag);canvas.addEventListener('pointercancel',stopDrag);
+ function canvasPoint(e){const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};}
+ canvas.addEventListener('pointerdown',e=>{const pt=canvasPoint(e),size=photo2?Math.min(canvas.width*.24,canvas.height*.16):0,x=photo2X===null?canvas.width-size-95:photo2X,y=photo2Y===null?canvas.height-size-230:photo2Y;dragState={x:pt.x,y:pt.y,photo2:!!photo2&&pt.x>=x&&pt.x<=x+size&&pt.y>=y&&pt.y<=y+size};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';});
+ canvas.addEventListener('pointermove',e=>{if(!dragState)return;const pt=canvasPoint(e),dx=pt.x-dragState.x,dy=pt.y-dragState.y;if(dragState.photo2){const size=Math.min(canvas.width*.24,canvas.height*.16);photo2X=Math.max(0,Math.min(canvas.width-size,(photo2X===null?canvas.width-size-95:photo2X)+dx));photo2Y=Math.max(0,Math.min(canvas.height-size,(photo2Y===null?canvas.height-size-230:photo2Y)+dy));}else if(photo){photoPanX+=dx*photo.width/canvas.width;photoPanY+=dy*photo.height/canvas.height;}dragState.x=pt.x;dragState.y=pt.y;draw();});
+ function stopDrag(){dragState=null;canvas.style.cursor='grab';}canvas.addEventListener('pointerup',stopDrag);canvas.addEventListener('pointercancel',stopDrag);
+ photoInput.addEventListener('change',e=>{readImage(e.target.files&&e.target.files[0],im=>{photo=im;draw();});});
+ photo2Input.addEventListener('change',e=>{readImage(e.target.files&&e.target.files[0],im=>{photo2=im;draw();});});
+ extraPhotoInputs.forEach((input,index)=>input.addEventListener('change',e=>{readImage(e.target.files&&e.target.files[0],im=>{extraPhotos[index]=im;draw();});}));
+ document.getElementById('photoZoom').addEventListener('input',e=>{zoomFactor=Number(e.target.value)/100;photoPanX=0;photoPanY=0;draw();});
+ document.getElementById('extraText').addEventListener('input',draw);document.getElementById('extraColor').addEventListener('input',e=>{extraColor=e.target.value;draw();});document.getElementById('extraSize').addEventListener('input',e=>{extraSize=Number(e.target.value);draw();});document.getElementById('bgColor').addEventListener('input',e=>{bgColor=e.target.value;draw();});document.getElementById('watermark').addEventListener('change',e=>{watermark=e.target.checked;draw();});
+ document.querySelectorAll('.sticker').forEach(b=>b.addEventListener('click',()=>{extraSticker=b.dataset.sticker;draw();}));document.getElementById('clearSticker').addEventListener('click',()=>{extraSticker='';draw();});
+ function snap(){return {name:nameInput.value,msg:msgInput.value,chosen,extra:document.getElementById('extraText').value,extraColor,extraSize,bgColor,watermark,extraSticker};}
+ function applySnap(s){nameInput.value=s.name;msgInput.value=s.msg;chosen=s.chosen;document.getElementById('extraText').value=s.extra;extraColor=s.extraColor;extraSize=s.extraSize;bgColor=s.bgColor;watermark=s.watermark;extraSticker=s.extraSticker;document.getElementById('extraColor').value=extraColor;document.getElementById('extraSize').value=extraSize;document.getElementById('bgColor').value=bgColor;document.getElementById('watermark').checked=watermark;document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x.dataset.style===chosen));draw();}
+ function pushHistory(){history=history.slice(0,historyAt+1);history.push(snap());if(history.length>30)history.shift();historyAt=history.length-1;}
+ [nameInput,msgInput,document.getElementById('extraText')].forEach(el=>el.addEventListener('change',pushHistory));document.querySelectorAll('.template').forEach(b=>b.addEventListener('click',()=>{chosen=b.dataset.style;document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x===b));draw();pushHistory();}));
+ document.getElementById('undo').addEventListener('click',()=>{if(historyAt>0){historyAt--;applySnap(history[historyAt]);}});document.getElementById('redo').addEventListener('click',()=>{if(historyAt<history.length-1){historyAt++;applySnap(history[historyAt]);}});
+ document.getElementById('saveDesign').addEventListener('click',()=>{localStorage.setItem('kiranFrameDesign',JSON.stringify(snap()));alert('ডিজাইনের লেখা ও সেটিংস এই ব্রাউজারে সেভ হয়েছে।');});document.getElementById('loadDesign').addEventListener('click',()=>{try{const s=JSON.parse(localStorage.getItem('kiranFrameDesign'));if(s)applySnap(s);else alert('এখনও কোনো ডিজাইন সেভ করা নেই।');}catch(e){alert('সেভ করা ডিজাইন খোলা যায়নি।');}});
+ function filterTemplates(){const q=document.getElementById('frameSearch').value.toLowerCase(),cat=document.getElementById('frameCategory').value;document.querySelectorAll('.template').forEach(b=>{const label=b.innerText.toLowerCase(),style=b.dataset.style;const categoryOK=cat==='all'||(cat==='festive'&&style==='red')||(cat==='floral'&&style==='floral')||(cat==='baby'&&(style==='baby'||style==='milestone'))||(cat==='royal'&&(style==='royal'||style==='blue'));b.hidden=!(label.includes(q)&&categoryOK);});}
+ document.getElementById('frameSearch').addEventListener('input',filterTemplates);document.getElementById('frameCategory').addEventListener('change',filterTemplates);
+ document.getElementById('downloadPdf').addEventListener('click',()=>{draw();const win=window.open('','_blank');if(!win){alert('PDF/প্রিন্টের জন্য ব্রাউজারের পপ-আপ অনুমতি দিন।');return;}win.document.write('<html><head><title>Kiran Creations Frame</title><style>@page{size:A4;margin:0}body{margin:0}img{width:210mm;height:297mm;display:block}</style></head><body><img src="'+canvas.toDataURL('image/png')+'" onload="window.print()"></body></html>');win.document.close();});
+ document.getElementById('whatsappOrder').addEventListener('click',()=>{const msg=encodeURIComponent('নমস্কার, Kiran Creations-এর ফটো ফ্রেম সম্পর্কে জানতে চাই। ডিজাইন: '+nameInput.value);window.open('https://wa.me/917679643645?text='+msg,'_blank');});
  nameInput.addEventListener('input',draw);msgInput.addEventListener('input',draw);
  document.querySelectorAll('.template').forEach(b=>b.addEventListener('click',()=>{chosen=b.dataset.style;document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x===b));draw();}));
  document.getElementById('download').addEventListener('click',()=>{draw();canvas.toBlob(blob=>{if(!blob){alert('ডাউনলোড তৈরি করা যায়নি। আবার চেষ্টা করুন।');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='kiran-creations-bengali-frame.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);},'image/png');});
- document.getElementById('reset').addEventListener('click',()=>{photo=null;photo2=null;photoInput.value='';photo2Input.value='';extraTextInput.value='';clipartInput.value='';photoZoom=1;photoX=0;photoY=0;Object.keys(layerState).forEach(k=>{layerState[k]={zoom:1,x:0,y:0};});selectedLayer='photo2';activeLayer.value='photo2';syncLayerControls();syncPhotoControls();nameInput.value='শুভ অন্নপ্রাশন';msgInput.value='অনেক ভালোবাসা ও আশীর্বাদ';chosen='red';document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x.dataset.style==='red'));draw();});
- draw();
+ document.getElementById('reset').addEventListener('click',()=>{photo=null;photo2=null;extraPhotos=[null,null,null,null];extraPhotoInputs.forEach(input=>input.value='');photoPanX=0;photoPanY=0;photo2X=null;photo2Y=null;photoInput.value='';photo2Input.value='';nameInput.value='শুভ অন্নপ্রাশন';msgInput.value='অনেক ভালোবাসা ও আশীর্বাদ';document.getElementById('extraText').value='';extraSticker='';zoomFactor=1;document.getElementById('photoZoom').value=100;bgColor='#fff4df';document.getElementById('bgColor').value=bgColor;chosen='red';document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x.dataset.style==='red'));draw();pushHistory();});
+ draw();pushHistory();
 })();
 </script>
 </body>
