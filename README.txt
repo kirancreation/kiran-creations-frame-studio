@@ -1,22 +1,9 @@
-Kiran Creations Bengali Frame Studio - New Features
+Kiran Creations — Double-click to edit TEXT
 
-Included:
-- index.html
-- baby-milestone.png
-- love-birthday-calendar.jpg
-- durga-puja-bengali-frame.png
+How to use:
+1. Choose “নতুন লেখা” from the “কোন জিনিসটি সরাবেন / জুম করবেন?” dropdown.
+2. Double-click the preview canvas. Enter the new text in the prompt.
+3. Drag the text on the preview and use the zoom sliders as before.
+4. Download PNG when finished.
 
-New options:
-1. Upload first photo
-2. Upload a separate second photo
-3. Add custom text
-4. Choose a clipart (flower, heart, diya, hibiscus, sparkle, celebration, teddy, butterfly, Bengali ornament)
-5. Existing frame choices and PNG download remain
-
-To update GitHub Pages:
-1. Extract this ZIP.
-2. Open https://github.com/kirancreation/kiran-creations-frame-studio
-3. Choose Add file > Upload files.
-4. Upload all files from this extracted folder, including the three image assets.
-5. Commit changes.
-6. Open https://kirancreation.github.io/kiran-creations-frame-studio/ and press Ctrl+F5.
+Upload index.html and the included image assets to the root of your GitHub Pages repository. Keep a backup of your previous index.html first.
