@@ -130,7 +130,7 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
   }
   if(chosen==='love'){
    if(loveFrame.complete&&loveFrame.naturalWidth)ctx.drawImage(loveFrame,0,0,w,h);else{ctx.fillStyle='#071e19';ctx.fillRect(0,0,w,h);}
-   if(photo){const slots=[[w*.523,h*.335,w*.263,h*.228],[w*.804,h*.369,w*.282,h*.235],[w*.523,h*.539,w*.263,h*.185],[w*.802,h*.574,w*.281,h*.217],[w*.214,h*.704,w*.318,h*.176],[w*.516,h*.716,w*.270,h*.184]];slots.forEach(([cx,cy,rx,ry])=>{ctx.save();ctx.beginPath();ctx.rect(cx-rx,cy-ry,rx*2,ry*2);ctx.clip();const ar=photo.width/photo.height,tar=(rx*2)/(ry*2);let sw,sh,sx,sy;if(ar>tar){sh=photo.height;sw=sh*tar;sx=(photo.width-sw)/2;sy=0;}else{sw=photo.width;sh=sw/tar;sx=0;sy=(photo.height-sh)/2;}ctx.drawImage(photo,sx,sy,sw,sh,cx-rx,cy-ry,rx*2,ry*2);ctx.restore();});}
+   if(photo){/* Six photo windows measured from the supplied calendar artwork; each image is clipped to its own window. */const slots=[[.392,.210,.655,.425],[.663,.234,.944,.454],[.393,.429,.655,.601],[.662,.460,.944,.659],[.055,.599,.373,.765],[.381,.604,.652,.780]];slots.forEach(([x1,y1,x2,y2])=>{const x=w*x1,y=h*y1,bw=w*(x2-x1),bh=h*(y2-y1);ctx.save();ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.clip();const ar=photo.width/photo.height,tar=bw/bh;let sw,sh,sx,sy;if(ar>tar){sh=photo.height;sw=sh*tar;sx=(photo.width-sw)/2;sy=0;}else{sw=photo.width;sh=sw/tar;sx=0;sy=(photo.height-sh)/2;}ctx.drawImage(photo,sx,sy,sw,sh,x,y,bw,bh);ctx.restore();});}
    return;
   }
   if(chosen==='durga'){
