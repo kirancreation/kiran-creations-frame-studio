@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kiran Creations Bengali Frame Studio</title>
+<style>
+:root { color-scheme: light dark; --bg: light-dark(#fff9f2,#17130f); --surface: light-dark(#ffffff,#241d18); --surface2: light-dark(#fff0df,#33271f); --text: light-dark(#302016,#fff4e8); --muted: light-dark(#78675b,#c6b4a4); --line: light-dark(#ead9c8,#4a392c); --accent: light-dark(#9f252d,#ffb2a7); --gold: #c79b45; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif; }
+#app { min-height:100vh; background:var(--bg); }
+header { padding:22px clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line); background:var(--surface); }
+.brand { display:flex; gap:12px; align-items:center; }
+.logo { width:48px; height:48px; border-radius:14px; display:grid; place-items:center; color:#fff5e7; font-size:24px; background:linear-gradient(135deg,#7c171f,#c28c3e); box-shadow:0 6px 18px #7c171f24; }
+h1 { margin:0; font-size:clamp(17px,2.3vw,25px); line-height:1.25; }
+.sub { color:var(--muted); font-size:12px; margin-top:4px; }
+.header-tag { font-size:12px; color:var(--accent); border:1px solid var(--line); border-radius:99px; padding:8px 12px; white-space:nowrap; }
+.hero { padding:30px clamp(16px,4vw,48px) 24px; background:linear-gradient(110deg,var(--surface2),var(--bg)); }
+.eyebrow { color:var(--accent); font-size:12px; font-weight:800; letter-spacing:.08em; }
+.hero h2 { font-size:clamp(26px,4vw,42px); line-height:1.16; margin:8px 0 10px; max-width:750px; }
+.hero p { color:var(--muted); margin:0; max-width:680px; line-height:1.7; }
+main { display:grid; grid-template-columns:minmax(260px,340px) minmax(0,1fr); gap:22px; padding:24px clamp(16px,4vw,48px) 42px; align-items:start; }
+.panel { border:1px solid var(--line); border-radius:18px; background:var(--surface); padding:18px; }
+.panel h3 { font-size:16px; margin:0 0 15px; }
+.field { margin-bottom:17px; }
+label { display:block; font-size:13px; font-weight:700; margin-bottom:7px; }
+input[type=text], select { width:100%; background:var(--bg); color:var(--text); border:1px solid var(--line); padding:11px 12px; border-radius:10px; font:inherit; font-size:14px; }
+input[type=file] { width:100%; color:var(--muted); font-size:12px; }
+.hint { color:var(--muted); font-size:11px; line-height:1.5; margin-top:6px; }
+.templates { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+.template { border:1px solid var(--line); border-radius:12px; padding:10px 8px; background:var(--bg); color:var(--text); cursor:pointer; text-align:left; font:inherit; }
+.template .swatch { height:42px; border-radius:7px; margin-bottom:8px; display:grid; place-items:center; font-size:22px; }
+.template strong { display:block; font-size:12px; }
+.template small { display:block; font-size:10px; color:var(--muted); margin-top:3px; }
+.template.active { border:2px solid var(--accent); padding:9px 7px; box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 14%,transparent); }
+.actions { display:flex; gap:9px; flex-wrap:wrap; margin-top:15px; }
+button { font:inherit; cursor:pointer; }
+.primary,.secondary { border-radius:11px; padding:11px 14px; font-weight:750; font-size:13px; border:1px solid transparent; }
+.primary { background:var(--accent); color:light-dark(#fff,#27110e); flex:1; }
+.secondary { background:var(--surface2); color:var(--text); border-color:var(--line); }
+.preview-panel { min-width:0; }
+.preview-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; }
+.preview-head h3 { margin:0; }
+.status { color:var(--muted); font-size:11px; }
+.canvas-wrap { background:var(--surface2); border:1px solid var(--line); border-radius:16px; padding:clamp(10px,2.5vw,24px); display:flex; justify-content:center; align-items:center; min-height:380px; overflow:hidden; }
+canvas { display:block; width:min(100%,620px); height:auto; max-height:75vh; object-fit:contain; box-shadow:0 12px 34px #0002; background:#fff; }
+.note { color:var(--muted); font-size:12px; line-height:1.65; margin:13px 2px 0; }
+.features { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:0 clamp(16px,4vw,48px) 28px; }
+.feature { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:15px; }
+.feature b { display:block; font-size:13px; margin-bottom:5px; }
+.feature span { color:var(--muted); font-size:11px; line-height:1.5; }
+footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); color:var(--muted); font-size:11px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+@media(max-width:800px){main{grid-template-columns:1fr}.features{grid-template-columns:1fr}.header-tag{display:none}.canvas-wrap{min-height:240px}.panel{padding:15px}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="brand"><div class="logo">ক</div><div><h1>Kiran Creations</h1><div class="sub">Bengali Frame Studio · অনলাইন ফটো ফ্রেম ডিজাইন</div></div></div>
+  <div class="header-tag">বাংলা ডিজাইন · A4 প্রিভিউ</div>
+</header>
+<section class="hero">
+  <div class="eyebrow">আপনার স্মৃতি, আপনার ডিজাইন</div>
+  <h2>নিজের ছবি দিয়ে বানান সুন্দর বাংলা ফটো ফ্রেম</h2>
+  <p>একটি ফ্রেম বেছে নিন, ছবি আপলোড করুন, নাম লিখুন এবং আপনার ডিজাইন PNG হিসেবে ডাউনলোড করুন। এই প্রাথমিক ডেমোটি বিনামূল্যে পরীক্ষা করতে পারেন।</p>
+</section>
+<main>
+  <section class="panel">
+    <h3>✦ আপনার ডিজাইন তৈরি করুন</h3>
+    <div class="field"><label for="photo">১. নিজের ছবি আপলোড করুন</label><input id="photo" type="file" accept="image/*"><div class="hint">JPG বা PNG ছবি ব্যবহার করুন। ছবিটি এই প্রিভিউতেই প্রসেস হয়।</div></div>
+    <div class="field"><label for="personName">২. নাম লিখুন</label><input id="personName" type="text" maxlength="50" placeholder="যেমন: শুভ অন্নপ্রাশন" value="শুভ অন্নপ্রাশন"></div>
+    <div class="field"><label for="message">৩. নিচের শুভেচ্ছাবার্তা</label><input id="message" type="text" maxlength="70" placeholder="আপনার শুভেচ্ছা লিখুন" value="অনেক ভালোবাসা ও আশীর্বাদ"></div>
+    <div class="field"><label>৪. ফ্রেম বেছে নিন</label><div class="templates" id="templates">
+      <button class="template active" data-style="red"><div class="swatch" style="background:linear-gradient(135deg,#7e1820,#d4a34f);color:#fff2d4">❋</div><strong>বাঙালিয়ানা</strong><small>লাল ও সোনালি</small></button>
+      <button class="template" data-style="floral"><div class="swatch" style="background:linear-gradient(135deg,#fbe7e7,#d9a1aa);color:#8d354a">✿</div><strong>ফ্লোরাল</strong><small>গোলাপি ফুল</small></button>
+      <button class="template" data-style="royal"><div class="swatch" style="background:linear-gradient(135deg,#173c31,#c6a45e);color:#fff2c8">❈</div><strong>রয়্যাল</strong><small>সবুজ ও সোনালি</small></button>
+      <button class="template" data-style="blue"><div class="swatch" style="background:linear-gradient(135deg,#dcecf5,#7199b7);color:#244e6a">✧</div><strong>এলিগ্যান্ট</strong><small>নীল ও রুপালি</small></button>
+      <button class="template" data-style="baby"><div class="swatch" style="background:linear-gradient(135deg,#d9f4ff,#56c8ee);color:#075c94">♡</div><strong>বেবি অ্যানাউন্সমেন্ট</strong><small>আকাশি নীল · A4</small></button>
+    </div></div>
+    <div class="actions"><button class="primary" id="download">↓ PNG ডাউনলোড</button><button class="secondary" id="reset">রিসেট</button></div>
+    <div class="hint">এটি প্রোটোটাইপ। এখানে অনলাইন পেমেন্ট বা পেইড ডাউনলোড চালু নেই।</div>
+  </section>
+  <section class="preview-panel">
+    <div class="preview-head"><h3>লাইভ প্রিভিউ</h3><span class="status" id="status">A4 অনুপাত · 2480 × 3508</span></div>
+    <div class="canvas-wrap"><canvas id="art" width="1240" height="1754" aria-label="ফটো ফ্রেম ডিজাইন প্রিভিউ"></canvas></div>
+    <p class="note">প্রিন্টের আগে আসল ছবির মান ও বাংলা ফন্ট পরীক্ষা করুন। এই ডেমোটি A4 অনুপাতের PNG তৈরি করে; বাণিজ্যিক প্রিন্ট-রেডি PDF, পেমেন্ট যাচাই এবং কাস্টমার অ্যাকাউন্ট যুক্ত করতে পরের ধাপে ডেভেলপমেন্ট দরকার হবে।</p>
+  </section>
+</main>
+<section class="features">
+  <div class="feature"><b>✦ বাংলা থিম</b><span>বাঙালি উৎসব ও পারিবারিক অনুষ্ঠানের জন্য ফ্রেম।</span></div>
+  <div class="feature"><b>▧ নিজের ছবি</b><span>ছবি আপলোড করে ডিজাইনে ব্যবহার করুন।</span></div>
+  <div class="feature"><b>↓ সহজ ডাউনলোড</b><span>প্রিভিউ থেকে PNG ফাইল সংরক্ষণ করুন।</span></div>
+</section>
+<footer><span>© Kiran Creations Bengali Frame Studio</span><span>প্রাথমিক ডেমো · এখনো প্রকাশিত ব্যবসায়িক ওয়েবসাইট নয়</span></footer>
+</div>
+<script>
+(() => {
+ const canvas=document.getElementById('art'), ctx=canvas.getContext('2d');
+ const photoInput=document.getElementById('photo'), nameInput=document.getElementById('personName'), msgInput=document.getElementById('message');
+ let chosen='red', photo=null;
+ const palettes={red:{bg:'#fff4df',dark:'#811f28',gold:'#c79b45',ink:'#6d2027',pale:'#f6dfb0'},floral:{bg:'#fff5f6',dark:'#9c4b62',gold:'#d7a0ac',ink:'#79344a',pale:'#f6dce3'},royal:{bg:'#f3f0df',dark:'#1e4a3b',gold:'#c7a65a',ink:'#204538',pale:'#e1d7a9'},blue:{bg:'#f1f7fb',dark:'#345d7b',gold:'#9cb8cc',ink:'#274c67',pale:'#d9e9f2'},baby:{bg:'#ffffff',dark:'#087bb7',gold:'#39c4d4',ink:'#064d83',pale:'#d9f4ff'}};
+ function fitText(text,maxWidth,size){let s=size;ctx.font=`700 ${s}px "Noto Sans Bengali", sans-serif`;while(ctx.measureText(text).width>maxWidth&&s>22){s-=2;ctx.font=`700 ${s}px "Noto Sans Bengali", sans-serif`;}return s;}
+ function draw(){
+  const p=palettes[chosen],w=canvas.width,h=canvas.height;
+  ctx.clearRect(0,0,w,h);ctx.fillStyle=p.bg;ctx.fillRect(0,0,w,h);
+  if(chosen==='baby'){
+   ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#111';ctx.lineWidth=22;ctx.strokeRect(12,12,w-24,h-24);ctx.strokeStyle='#bdeefa';ctx.lineWidth=7;ctx.strokeRect(35,35,w-70,h-70);
+   function cloud(x,y,r){ctx.fillStyle='#bdeeff';ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.arc(x+r*.8,y-r*.35,r*.8,0,Math.PI*2);ctx.arc(x+r*1.5,y,r*.9,0,Math.PI*2);ctx.fill();}
+   cloud(90,115,100);cloud(w-250,130,120);cloud(w-120,790,90);cloud(100,h-250,120);cloud(w-170,h-180,90);
+   ctx.strokeStyle='#e5bd75';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(80,150);ctx.quadraticCurveTo(w/2,250,w-80,150);ctx.stroke();
+   ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='700 44px sans-serif';ctx.fillStyle='#087bb7';ctx.fillText('♡  BABY ANNOUNCEMENT  ♡',w/2,205);
+   ctx.font='700 30px sans-serif';ctx.fillStyle='#087bb7';ctx.textAlign='left';ctx.fillText('Born In:',95,570);ctx.fillText('Blood Group:',75,1030);ctx.fillText('Weight:',90,1400);ctx.textAlign='right';ctx.fillText('Born Time:',w-85,680);ctx.fillText('Height:',w-95,1170);
+   ctx.textAlign='center';ctx.font='700 34px sans-serif';ctx.fillStyle='#111';ctx.fillText('DATE: __________________',235,655);ctx.fillText('TIME: __________',w-240,800);ctx.fillText('GROUP: ______',245,1160);ctx.fillText('HEIGHT: ______',w-230,1310);ctx.fillText('WEIGHT: ______',235,1510);
+   ctx.fillStyle='#dff8ff';ctx.beginPath();ctx.arc(w/2,750,255,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#36c5d4';ctx.lineWidth=18;ctx.stroke();ctx.strokeStyle='#fff';ctx.lineWidth=8;ctx.stroke();
+   if(photo){const s=Math.min(photo.width,photo.height),sx=(photo.width-s)/2,sy=(photo.height-s)/2;ctx.save();ctx.beginPath();ctx.arc(w/2,750,220,0,Math.PI*2);ctx.clip();ctx.drawImage(photo,sx,sy,s,s,w/2-220,530,440,440);ctx.restore();}else{ctx.fillStyle='#087bb7';ctx.font='700 34px sans-serif';ctx.fillText('YOUR BABY PHOTO',w/2,750);}
+   ctx.fillStyle='#fff';ctx.strokeStyle='#ee4769';ctx.lineWidth=12;ctx.beginPath();ctx.arc(w-270,h-285,150,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#087bb7';ctx.font='700 28px sans-serif';ctx.fillText('MOM & DAD',w/2,1610);ctx.fillStyle='#111';ctx.font='700 24px sans-serif';ctx.fillText('________________________',w/2,1660);ctx.fillStyle='#087bb7';ctx.font='700 22px sans-serif';ctx.fillText('Kiran Creations · A4 Frame',w/2,h-75);return;
+  }
+  // subtle paper texture lines
+  ctx.strokeStyle=p.pale;ctx.lineWidth=2;ctx.strokeRect(35,35,w-70,h-70);
+  ctx.strokeStyle=p.gold;ctx.lineWidth=8;ctx.strokeRect(55,55,w-110,h-110);
+  ctx.strokeStyle=p.dark;ctx.lineWidth=3;ctx.strokeRect(78,78,w-156,h-156);
+  // corner ornaments
+  const corners=[[105,105,1,1],[w-105,105,-1,1],[105,h-105,1,-1],[w-105,h-105,-1,-1]];
+  corners.forEach(([x,y,sx,sy])=>{ctx.save();ctx.translate(x,y);ctx.scale(sx,sy);ctx.strokeStyle=p.gold;ctx.fillStyle=p.dark;ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(0,65);ctx.bezierCurveTo(0,10,15,0,65,0);ctx.bezierCurveTo(38,25,32,38,0,65);ctx.stroke();ctx.beginPath();ctx.arc(20,20,8,0,Math.PI*2);ctx.fill();ctx.restore();});
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle=p.dark;ctx.font='700 40px sans-serif';ctx.fillText('❋  শুভেচ্ছা  ❋',w/2,142);
+  const title=nameInput.value.trim()||'আপনার ফটো ফ্রেম';let titleSize=fitText(title,w-180,66);ctx.font=`700 ${titleSize}px "Noto Sans Bengali", sans-serif`;ctx.fillStyle=p.ink;ctx.fillText(title,w/2,218);
+  // photo mat and image area
+  const bx=180,by=290,bw=w-360,bh=990;
+  ctx.fillStyle='#ffffff';ctx.fillRect(bx-18,by-18,bw+36,bh+36);ctx.strokeStyle=p.gold;ctx.lineWidth=9;ctx.strokeRect(bx-18,by-18,bw+36,bh+36);ctx.strokeStyle=p.dark;ctx.lineWidth=3;ctx.strokeRect(bx,by,bw,bh);
+  if(photo){const ar=photo.width/photo.height,tar=bw/bh;let sw,sh,sx,sy;if(ar>tar){sh=photo.height;sw=sh*tar;sx=(photo.width-sw)/2;sy=0;}else{sw=photo.width;sh=sw/tar;sx=0;sy=(photo.height-sh)/2;}ctx.save();ctx.beginPath();ctx.rect(bx,by,bw,bh);ctx.clip();ctx.drawImage(photo,sx,sy,sw,sh,bx,by,bw,bh);ctx.restore();}
+  else {ctx.fillStyle='#f4eee5';ctx.fillRect(bx,by,bw,bh);ctx.strokeStyle=p.pale;ctx.lineWidth=4;for(let i=0;i<6;i++){ctx.beginPath();ctx.arc(w/2,by+bh/2,70+i*54,0,Math.PI*2);ctx.stroke();}ctx.fillStyle=p.ink;ctx.font='700 46px "Noto Sans Bengali", sans-serif';ctx.fillText('এখানে আপনার ছবি বসবে',w/2,by+bh/2-10);ctx.font='28px sans-serif';ctx.fillText('UPLOAD YOUR PHOTO',w/2,by+bh/2+55);}
+  const msg=msgInput.value.trim();ctx.fillStyle=p.dark;ctx.font=`600 ${fitText(msg,w-180,42)}px "Noto Sans Bengali", sans-serif`;ctx.fillText(msg,w/2,by+bh+115);
+  ctx.fillStyle=p.gold;ctx.font='700 34px sans-serif';ctx.fillText('✦  ✦  ✦',w/2,by+bh+185);
+  ctx.fillStyle=p.ink;ctx.font='600 26px "Noto Sans Bengali", sans-serif';ctx.fillText('Kiran Creations',w/2,h-130);
+  ctx.fillStyle=p.dark;ctx.font='22px sans-serif';ctx.fillText('Bengali Frame Studio',w/2,h-92);
+ }
+ photoInput.addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(!f.type.startsWith('image/')){alert('একটি ছবি ফাইল বেছে নিন।');return;}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{photo=im;draw();};im.src=r.result;};r.readAsDataURL(f);});
+ nameInput.addEventListener('input',draw);msgInput.addEventListener('input',draw);
+ document.querySelectorAll('.template').forEach(b=>b.addEventListener('click',()=>{chosen=b.dataset.style;document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x===b));draw();}));
+ document.getElementById('download').addEventListener('click',()=>{draw();canvas.toBlob(blob=>{if(!blob){alert('ডাউনলোড তৈরি করা যায়নি। আবার চেষ্টা করুন।');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='kiran-creations-bengali-frame.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);},'image/png');});
+ document.getElementById('reset').addEventListener('click',()=>{photo=null;photoInput.value='';nameInput.value='শুভ অন্নপ্রাশন';msgInput.value='অনেক ভালোবাসা ও আশীর্বাদ';chosen='red';document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x.dataset.style==='red'));draw();});
+ draw();
+})();
+</script>
+</body>
+</html>
