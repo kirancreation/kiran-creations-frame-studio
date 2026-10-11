@@ -68,6 +68,10 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
   <section class="panel">
     <h3>✦ আপনার ডিজাইন তৈরি করুন</h3>
     <div class="field"><label for="photo">১. নিজের ছবি আপলোড করুন</label><input id="photo" type="file" accept="image/*"><div class="hint">JPG বা PNG ছবি ব্যবহার করুন। ছবিটি এই প্রিভিউতেই প্রসেস হয়।</div></div>
+    <div class="field photo-adjust"><label for="photoZoom">ছবি ছোট-বড় করুন (জুম)</label><input id="photoZoom" type="range" min="1" max="3" step="0.05" value="1"><div class="hint">জুম: <span id="zoomValue">100%</span></div></div>
+    <div class="field photo-adjust"><label for="photoX">ছবি ডানে-বাঁয়ে সরান</label><input id="photoX" type="range" min="-1" max="1" step="0.02" value="0"></div>
+    <div class="field photo-adjust"><label for="photoY">ছবি ওপরে-নিচে সরান</label><input id="photoY" type="range" min="-1" max="1" step="0.02" value="0"></div>
+    <div class="hint">প্রিভিউ ছবির ওপর মাউস চেপে ধরে টানলেও ছবি সরাতে পারবেন। এই নিয়ন্ত্রণ সব ছবির ঘরে একইভাবে প্রয়োগ হবে।</div>
     <div class="field"><label for="personName">২. নাম লিখুন</label><input id="personName" type="text" maxlength="50" placeholder="যেমন: শুভ অন্নপ্রাশন" value="শুভ অন্নপ্রাশন"></div>
     <div class="field"><label for="message">৩. নিচের শুভেচ্ছাবার্তা</label><input id="message" type="text" maxlength="70" placeholder="আপনার শুভেচ্ছা লিখুন" value="অনেক ভালোবাসা ও আশীর্বাদ"></div>
     <div class="field"><label>৪. ফ্রেম বেছে নিন</label><div class="templates" id="templates">
@@ -100,7 +104,7 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
 (() => {
  const canvas=document.getElementById('art'), ctx=canvas.getContext('2d');
  const photoInput=document.getElementById('photo'), nameInput=document.getElementById('personName'), msgInput=document.getElementById('message');
- let chosen='red', photo=null;
+ let chosen='red', photo=null, photoZoom=1, photoX=0, photoY=0;
  const milestoneFrame=new Image();
  milestoneFrame.onload=()=>{if(chosen==='milestone')draw();};
  milestoneFrame.src='baby-milestone.png';
@@ -109,6 +113,14 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
  loveFrame.onload=()=>{if(chosen==='love')draw();};
  const palettes={red:{bg:'#fff4df',dark:'#811f28',gold:'#c79b45',ink:'#6d2027',pale:'#f6dfb0'},floral:{bg:'#fff5f6',dark:'#9c4b62',gold:'#d7a0ac',ink:'#79344a',pale:'#f6dce3'},royal:{bg:'#f3f0df',dark:'#1e4a3b',gold:'#c7a65a',ink:'#204538',pale:'#e1d7a9'},blue:{bg:'#f1f7fb',dark:'#345d7b',gold:'#9cb8cc',ink:'#274c67',pale:'#d9e9f2'},baby:{bg:'#ffffff',dark:'#087bb7',gold:'#39c4d4',ink:'#064d83',pale:'#d9f4ff'},milestone:{bg:'#ffffff',dark:'#087bb7',gold:'#39c4d4',ink:'#064d83',pale:'#d9f4ff'},love:{bg:'#071e19',dark:'#ed478d',gold:'#c79b45',ink:'#fff',pale:'#ed478d'},durga:{bg:'#fff2d0',dark:'#b91e24',gold:'#c79b45',ink:'#81201b',pale:'#fff2d0'}};
  function fitText(text,maxWidth,size){let s=size;ctx.font=`700 ${s}px "Noto Sans Bengali", sans-serif`;while(ctx.measureText(text).width>maxWidth&&s>22){s-=2;ctx.font=`700 ${s}px "Noto Sans Bengali", sans-serif`;}return s;}
+ function drawPhotoCrop(img,x,y,width,height){
+  if(!img)return;
+  const scale=Math.max(width/img.width,height/img.height)*photoZoom;
+  const dw=img.width*scale,dh=img.height*scale;
+  const dx=x+(width-dw)/2+photoX*Math.max(0,dw-width)/2;
+  const dy=y+(height-dh)/2+photoY*Math.max(0,dh-height)/2;
+  ctx.drawImage(img,dx,dy,dw,dh);
+ }
  function draw(){
   const p=palettes[chosen],w=canvas.width,h=canvas.height;
   ctx.clearRect(0,0,w,h);ctx.fillStyle=p.bg;ctx.fillRect(0,0,w,h);
@@ -117,9 +129,7 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
    const drawPhotoCircle=(cx,cy,rx,ry)=>{
     if(!photo)return;
     ctx.save();ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);ctx.clip();
-    const ar=photo.width/photo.height,tar=rx/ry;let sw,sh,sx,sy;
-    if(ar>tar){sh=photo.height;sw=sh*tar;sx=(photo.width-sw)/2;sy=0;}else{sw=photo.width;sh=sw/tar;sx=0;sy=(photo.height-sh)/2;}
-    ctx.drawImage(photo,sx,sy,sw,sh,cx-rx,cy-ry,rx*2,ry*2);ctx.restore();
+    drawPhotoCrop(photo,cx-rx,cy-ry,rx*2,ry*2);ctx.restore();
    };
    // Photo appears in the two portrait openings of the supplied design.
    drawPhotoCircle(w*0.487, h*0.398, w*0.153, h*0.116);
@@ -130,12 +140,12 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
   }
   if(chosen==='love'){
    if(loveFrame.complete&&loveFrame.naturalWidth)ctx.drawImage(loveFrame,0,0,w,h);else{ctx.fillStyle='#071e19';ctx.fillRect(0,0,w,h);}
-   if(photo){/* Six photo windows measured from the supplied calendar artwork; each image is clipped to its own window. */const slots=[[.392,.210,.655,.425],[.663,.234,.944,.454],[.393,.429,.655,.601],[.662,.460,.944,.659],[.055,.599,.373,.765],[.381,.604,.652,.780]];slots.forEach(([x1,y1,x2,y2])=>{const x=w*x1,y=h*y1,bw=w*(x2-x1),bh=h*(y2-y1);ctx.save();ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.clip();const ar=photo.width/photo.height,tar=bw/bh;let sw,sh,sx,sy;if(ar>tar){sh=photo.height;sw=sh*tar;sx=(photo.width-sw)/2;sy=0;}else{sw=photo.width;sh=sw/tar;sx=0;sy=(photo.height-sh)/2;}ctx.drawImage(photo,sx,sy,sw,sh,x,y,bw,bh);ctx.restore();});}
+   if(photo){const slots=[[w*.523,h*.335,w*.263,h*.228],[w*.804,h*.369,w*.282,h*.235],[w*.523,h*.539,w*.263,h*.185],[w*.802,h*.574,w*.281,h*.217],[w*.214,h*.704,w*.318,h*.176],[w*.516,h*.716,w*.270,h*.184]];slots.forEach(([cx,cy,rx,ry])=>{ctx.save();ctx.beginPath();ctx.rect(cx-rx,cy-ry,rx*2,ry*2);ctx.clip();drawPhotoCrop(photo,cx-rx,cy-ry,rx*2,ry*2);ctx.restore();});}
    return;
   }
   if(chosen==='durga'){
    if(durgaFrame.complete&&durgaFrame.naturalWidth)ctx.drawImage(durgaFrame,0,0,w,h);else{ctx.fillStyle='#fff2d0';ctx.fillRect(0,0,w,h);}
-   if(photo){const x=w*.19,y=h*.235,bw=w*.55,bh=h*.48;ctx.save();ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.clip();const ar=photo.width/photo.height,tar=bw/bh;let sw,sh,sx,sy;if(ar>tar){sh=photo.height;sw=sh*tar;sx=(photo.width-sw)/2;sy=0;}else{sw=photo.width;sh=sw/tar;sx=0;sy=(photo.height-sh)/2;}ctx.drawImage(photo,sx,sy,sw,sh,x,y,bw,bh);ctx.restore();}
+   if(photo){const x=w*.19,y=h*.235,bw=w*.55,bh=h*.48;ctx.save();ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.clip();drawPhotoCrop(photo,x,y,bw,bh);ctx.restore();}
    return;
   }
   if(chosen==='baby'){
@@ -147,7 +157,7 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
    ctx.font='700 30px sans-serif';ctx.fillStyle='#087bb7';ctx.textAlign='left';ctx.fillText('Born In:',95,570);ctx.fillText('Blood Group:',75,1030);ctx.fillText('Weight:',90,1400);ctx.textAlign='right';ctx.fillText('Born Time:',w-85,680);ctx.fillText('Height:',w-95,1170);
    ctx.textAlign='center';ctx.font='700 34px sans-serif';ctx.fillStyle='#111';ctx.fillText('DATE: __________________',235,655);ctx.fillText('TIME: __________',w-240,800);ctx.fillText('GROUP: ______',245,1160);ctx.fillText('HEIGHT: ______',w-230,1310);ctx.fillText('WEIGHT: ______',235,1510);
    ctx.fillStyle='#dff8ff';ctx.beginPath();ctx.arc(w/2,750,255,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#36c5d4';ctx.lineWidth=18;ctx.stroke();ctx.strokeStyle='#fff';ctx.lineWidth=8;ctx.stroke();
-   if(photo){const s=Math.min(photo.width,photo.height),sx=(photo.width-s)/2,sy=(photo.height-s)/2;ctx.save();ctx.beginPath();ctx.arc(w/2,750,220,0,Math.PI*2);ctx.clip();ctx.drawImage(photo,sx,sy,s,s,w/2-220,530,440,440);ctx.restore();}else{ctx.fillStyle='#087bb7';ctx.font='700 34px sans-serif';ctx.fillText('YOUR BABY PHOTO',w/2,750);}
+   if(photo){ctx.save();ctx.beginPath();ctx.arc(w/2,750,220,0,Math.PI*2);ctx.clip();drawPhotoCrop(photo,w/2-220,530,440,440);ctx.restore();}else{ctx.fillStyle='#087bb7';ctx.font='700 34px sans-serif';ctx.fillText('YOUR BABY PHOTO',w/2,750);}
    ctx.fillStyle='#fff';ctx.strokeStyle='#ee4769';ctx.lineWidth=12;ctx.beginPath();ctx.arc(w-270,h-285,150,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#087bb7';ctx.font='700 28px sans-serif';ctx.fillText('MOM & DAD',w/2,1610);ctx.fillStyle='#111';ctx.font='700 24px sans-serif';ctx.fillText('________________________',w/2,1660);ctx.fillStyle='#087bb7';ctx.font='700 22px sans-serif';ctx.fillText('Kiran Creations · A4 Frame',w/2,h-75);return;
   }
   // subtle paper texture lines
@@ -163,18 +173,29 @@ footer { border-top:1px solid var(--line); padding:18px clamp(16px,4vw,48px); co
   // photo mat and image area
   const bx=180,by=290,bw=w-360,bh=990;
   ctx.fillStyle='#ffffff';ctx.fillRect(bx-18,by-18,bw+36,bh+36);ctx.strokeStyle=p.gold;ctx.lineWidth=9;ctx.strokeRect(bx-18,by-18,bw+36,bh+36);ctx.strokeStyle=p.dark;ctx.lineWidth=3;ctx.strokeRect(bx,by,bw,bh);
-  if(photo){const ar=photo.width/photo.height,tar=bw/bh;let sw,sh,sx,sy;if(ar>tar){sh=photo.height;sw=sh*tar;sx=(photo.width-sw)/2;sy=0;}else{sw=photo.width;sh=sw/tar;sx=0;sy=(photo.height-sh)/2;}ctx.save();ctx.beginPath();ctx.rect(bx,by,bw,bh);ctx.clip();ctx.drawImage(photo,sx,sy,sw,sh,bx,by,bw,bh);ctx.restore();}
+  if(photo){ctx.save();ctx.beginPath();ctx.rect(bx,by,bw,bh);ctx.clip();drawPhotoCrop(photo,bx,by,bw,bh);ctx.restore();}
   else {ctx.fillStyle='#f4eee5';ctx.fillRect(bx,by,bw,bh);ctx.strokeStyle=p.pale;ctx.lineWidth=4;for(let i=0;i<6;i++){ctx.beginPath();ctx.arc(w/2,by+bh/2,70+i*54,0,Math.PI*2);ctx.stroke();}ctx.fillStyle=p.ink;ctx.font='700 46px "Noto Sans Bengali", sans-serif';ctx.fillText('এখানে আপনার ছবি বসবে',w/2,by+bh/2-10);ctx.font='28px sans-serif';ctx.fillText('UPLOAD YOUR PHOTO',w/2,by+bh/2+55);}
   const msg=msgInput.value.trim();ctx.fillStyle=p.dark;ctx.font=`600 ${fitText(msg,w-180,42)}px "Noto Sans Bengali", sans-serif`;ctx.fillText(msg,w/2,by+bh+115);
   ctx.fillStyle=p.gold;ctx.font='700 34px sans-serif';ctx.fillText('✦  ✦  ✦',w/2,by+bh+185);
   ctx.fillStyle=p.ink;ctx.font='600 26px "Noto Sans Bengali", sans-serif';ctx.fillText('Kiran Creations',w/2,h-130);
   ctx.fillStyle=p.dark;ctx.font='22px sans-serif';ctx.fillText('Bengali Frame Studio',w/2,h-92);
  }
+ const zoomInput=document.getElementById('photoZoom'), xInput=document.getElementById('photoX'), yInput=document.getElementById('photoY');
+ const syncPhotoControls=()=>{zoomInput.value=photoZoom;xInput.value=photoX;yInput.value=photoY;document.getElementById('zoomValue').textContent=Math.round(photoZoom*100)+'%';};
+ zoomInput.addEventListener('input',()=>{photoZoom=Number(zoomInput.value);syncPhotoControls();draw();});
+ xInput.addEventListener('input',()=>{photoX=Number(xInput.value);draw();});
+ yInput.addEventListener('input',()=>{photoY=Number(yInput.value);draw();});
+ let dragging=false,lastPointer=null;
+ canvas.style.touchAction='none';canvas.style.cursor='grab';
+ canvas.addEventListener('pointerdown',e=>{if(!photo)return;dragging=true;lastPointer={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId);canvas.style.cursor='grabbing';});
+ canvas.addEventListener('pointermove',e=>{if(!dragging||!lastPointer)return;const rect=canvas.getBoundingClientRect();photoX=Math.max(-1,Math.min(1,photoX+(e.clientX-lastPointer.x)/rect.width*2));photoY=Math.max(-1,Math.min(1,photoY+(e.clientY-lastPointer.y)/rect.height*2));lastPointer={x:e.clientX,y:e.clientY};syncPhotoControls();draw();});
+ const stopDrag=()=>{dragging=false;lastPointer=null;canvas.style.cursor='grab';};
+ canvas.addEventListener('pointerup',stopDrag);canvas.addEventListener('pointercancel',stopDrag);
  photoInput.addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(!f.type.startsWith('image/')){alert('একটি ছবি ফাইল বেছে নিন।');return;}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{photo=im;draw();};im.src=r.result;};r.readAsDataURL(f);});
  nameInput.addEventListener('input',draw);msgInput.addEventListener('input',draw);
  document.querySelectorAll('.template').forEach(b=>b.addEventListener('click',()=>{chosen=b.dataset.style;document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x===b));draw();}));
  document.getElementById('download').addEventListener('click',()=>{draw();canvas.toBlob(blob=>{if(!blob){alert('ডাউনলোড তৈরি করা যায়নি। আবার চেষ্টা করুন।');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='kiran-creations-bengali-frame.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);},'image/png');});
- document.getElementById('reset').addEventListener('click',()=>{photo=null;photoInput.value='';nameInput.value='শুভ অন্নপ্রাশন';msgInput.value='অনেক ভালোবাসা ও আশীর্বাদ';chosen='red';document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x.dataset.style==='red'));draw();});
+ document.getElementById('reset').addEventListener('click',()=>{photo=null;photoInput.value='';photoZoom=1;photoX=0;photoY=0;syncPhotoControls();nameInput.value='শুভ অন্নপ্রাশন';msgInput.value='অনেক ভালোবাসা ও আশীর্বাদ';chosen='red';document.querySelectorAll('.template').forEach(x=>x.classList.toggle('active',x.dataset.style==='red'));draw();});
  draw();
 })();
 </script>
