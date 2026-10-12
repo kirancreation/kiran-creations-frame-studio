@@ -48,7 +48,7 @@ footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
 <section class="panel">
 <h2>📷 Photo Gallery</h2>
 <label class="filebtn" for="psdFile">🧩 PSD Upload (Editable Layers)</label><input id="psdFile" type="file" accept=".psd,image/vnd.adobe.photoshop,application/octet-stream">
-<div class="muted">PSD আপলোড করলে প্রতিটি visible layer আলাদা object হিসেবে ক্যানভাসে আসবে।</div>
+<div class="muted">PSD আপলোড করলে পুরো ডিজাইন Preview-তে দেখা যাবে। প্রতিটি visible layer আলাদাভাবে select করে Move, Zoom/Resize, Delete, Duplicate ও Clipping Mask করতে পারবেন।</div><div id="psdStatus" class="muted" role="status" style="margin:8px 0;padding:7px;background:#f4f1ff;border-radius:7px">PSD ফাইল নির্বাচন করুন</div>
 <h3>🧩 PSD Layer Panel</h3><div id="layerPanel" class="muted" style="max-height:180px;overflow:auto;border:1px solid var(--line);border-radius:7px;padding:5px">PSD আপলোড করুন</div>
 <div class="btns"><button id="clipLayer" class="secondary">Clipping Mask (নিচের Layer)</button></div>
 <label class="filebtn" for="files">+ একসঙ্গে অনেক ছবি লোড</label><input id="files" type="file" accept="image/*" multiple>
@@ -56,11 +56,9 @@ footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
 <div class="muted">গ্যালারি থেকে ছবি বেছে ক্যানভাসে বসান। Ctrl/Shift ছাড়াই একাধিক ছবি নির্বাচন করা যাবে।</div>
 <div class="btns"><button class="secondary" id="all">Select All</button><button class="secondary" id="place">নির্বাচিত বসান</button><button class="danger" id="clearGal">গ্যালারি মুছুন</button></div>
 <div id="count" class="count">0 ছবি</div><div id="gallery"></div>
-<h3>📱 মোবাইল দিয়ে ছবি আপলোড (QR Code)</h3>
-<div class="muted">কম্পিউটার ও মোবাইল একই Wi-Fi-তে রাখুন। নিচের QR স্ক্যান করে ছবি আপলোড করুন—ছবি এই গ্যালারিতে চলে আসবে।</div>
-<div id="qrStatus" class="muted" style="margin:8px 0">QR তৈরি হচ্ছে…</div>
-<a id="qrLink" href="#" target="_blank" rel="noopener" style="display:none"><img id="qrImage" alt="Mobile photo upload QR code" style="display:block;width:170px;height:170px;object-fit:contain;margin:8px auto;border:1px solid #e0e4ef;border-radius:8px"></a>
-<button id="copyUploadLink" class="secondary" style="width:100%;display:none">মোবাইল লিংক দেখুন</button>
+<h3>📱 WhatsApp QR Code</h3>
+<div class="muted">WhatsApp-এ যোগাযোগ করতে QR Code স্ক্যান করুন।</div>
+<img src="whatsapp-qr.jpeg" alt="আপলোড করা WhatsApp QR Code" style="display:block;width:100%;max-width:300px;height:auto;object-fit:contain;margin:10px auto;border:1px solid var(--line);border-radius:8px">
 <h3>Clipping Mask</h3><div class="muted">ক্যানভাসে একটি ছবি নির্বাচন করে Mask Shape প্রয়োগ করুন।</div>
 <select id="mask"><option value="none">No mask / Rectangle</option><option value="circle">Circle</option><option value="oval">Oval</option><option value="rounded">Rounded rectangle</option><option value="heart">Heart</option><option value="diamond">Diamond</option></select>
 <div class="btns"><button id="applyMask">Mask প্রয়োগ</button><button class="secondary" id="resetMask">Mask সরান</button></div>
@@ -89,6 +87,7 @@ footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
 <div class="btns"><button id="export">JPG ডাউনলোড</button></div><div class="muted">Export-এর সময় CDN থেকে html2canvas লোড করতে ইন্টারনেট প্রয়োজন।</div>
 </div>
 </aside></main><footer>Kiran Creations Frame Studio Pro • Your images are processed in this browser.</footer>
+<script src="https://cdn.jsdelivr.net/npm/ag-psd@31.0.0/dist/bundle.js" onerror="this.onerror=null;this.src='https://unpkg.com/ag-psd@31.0.0/dist/bundle.js'"></script>
 <script>
 (()=> {
 const $=id=>document.getElementById(id), stage=$('stage'), gallery=$('gallery');
@@ -113,25 +112,32 @@ function canvasToUrl(canvas){return canvas.toDataURL('image/png')}
 function walkPsdLayers(layers,out=[]){(layers||[]).forEach(layer=>{if(layer.hidden)return;if(layer.canvas && layer.canvas.width && layer.canvas.height)out.push(layer);if(layer.children)walkPsdLayers(layer.children,out)});return out}
 $('psdFile').onchange=async e=>{
  const file=e.target.files&&e.target.files[0];if(!file)return;
+ const status=$('psdStatus');status.textContent='PSD পড়া হচ্ছে…';
  try{
-  if(!window.agPsd||!window.agPsd.readPsd)throw new Error('PSD library load হয়নি। ইন্টারনেট চালু করে আবার চেষ্টা করুন।');
-  const buffer=await file.arrayBuffer();const psd=window.agPsd.readPsd(buffer,{skipLayerImageData:false});
+  if(!window.agPsd||!window.agPsd.readPsd){
+   await new Promise((resolve,reject)=>{if(window.agPsd&&window.agPsd.readPsd)return resolve();const script=document.createElement('script');script.src='https://unpkg.com/ag-psd@31.0.0/dist/bundle.js';script.onload=()=>window.agPsd&&window.agPsd.readPsd?resolve():reject(new Error('PSD লাইব্রেরি পাওয়া যায়নি। ইন্টারনেট চালু করে Refresh করুন।'));script.onerror=()=>reject(new Error('PSD লাইব্রেরি ডাউনলোড হয়নি। ইন্টারনেট/CDN সংযোগ পরীক্ষা করুন।'));document.head.append(script)})
+  }
+  const buffer=await file.arrayBuffer();
+  const psd=window.agPsd.readPsd(buffer,{skipLayerImageData:false,skipCompositeImageData:false});
   const layers=walkPsdLayers(psd.children);
-  if(!layers.length)throw new Error('PSD-তে কোনো visible layer পাওয়া যায়নি।');
+  if(!layers.length)throw new Error('PSD-তে visible pixel layer পাওয়া যায়নি। PSD ফাইলটি flattened/unsupported হলে PNG/JPG preview ব্যবহার করুন।');
   const pw=psd.width||595,ph=psd.height||842;
-  setPage(pw/ph>0.72?'A3':'A4',false);
-  stage.querySelectorAll('.obj').forEach(o=>o.remove());active=null;$('empty').style.display='none';
+  // Keep the original app's A4/A3 controls, but fit the PSD artwork proportionally inside the preview.
+  setPage((pw>595||ph>842)?'A3':'A4',false);
+  stage.querySelectorAll('.obj').forEach(o=>o.remove());active=null;
   const scale=Math.min(stage.clientWidth/pw,stage.clientHeight/ph);
+  const offsetX=(stage.clientWidth-pw*scale)/2,offsetY=(stage.clientHeight-ph*scale)/2;
+  // Back-to-front order preserves the original layered preview while keeping each layer independently editable.
   layers.slice().reverse().forEach((layer,idx)=>{
    const url=canvasToUrl(layer.canvas);const asset={id:seq++,name:layer.name||('PSD Layer '+(idx+1)),url};
    assets.push(asset);
-   const el=createObj(asset,(layer.left||0)*scale,(layer.top||0)*scale,layer.canvas.width*scale,layer.canvas.height*scale,{type:'psd-layer'});
-   el.dataset.layerName=layer.name||('PSD Layer '+(idx+1));el.dataset.psdLayer='1';
+   const el=createObj(asset,offsetX+(layer.left||0)*scale,offsetY+(layer.top||0)*scale,layer.canvas.width*scale,layer.canvas.height*scale,{type:'psd-layer'});
+   el.dataset.layerName=layer.name||('PSD Layer '+(idx+1));el.dataset.psdLayer='1';el.dataset.psdOriginalLeft=layer.left||0;el.dataset.psdOriginalTop=layer.top||0;
    el.title=el.dataset.layerName;
   });
   refreshLayerPanel();push();
-  alert(`${layers.length}টি visible PSD layer আলাদা করে লোড হয়েছে। Layer Panel থেকে layer নির্বাচন করে move/resize/delete/duplicate করতে পারবেন।`);
- }catch(err){alert('PSD Upload ব্যর্থ: '+err.message)}
+  status.textContent=`✓ ${file.name} — ${pw} × ${ph}px • ${layers.length}টি visible layer loaded. Layer Panel থেকে layer নির্বাচন করুন।`;
+ }catch(err){status.textContent='PSD Upload ব্যর্থ: '+err.message;alert('PSD Upload ব্যর্থ: '+err.message)}
  e.target.value='';
 };
 $('clipLayer').onclick=()=>{
@@ -143,7 +149,7 @@ $('clipLayer').onclick=()=>{
   const w=Math.max(1,Math.round(top.offsetWidth)),h=Math.max(1,Math.round(top.offsetHeight));
   const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');
   const source=new Image(), mask=new Image();
-  source.onload=()=>{ctx.drawImage(source,0,0,w,h);mask.onload=()=>{ctx.globalCompositeOperation='destination-in';ctx.drawImage(mask,0,0,w,h);const url=c.toDataURL('image/png');top.dataset.originalSrc=top.dataset.originalSrc||top.dataset.src;top.dataset.src=url;im.src=url;push();refreshLayerPanel();};mask.onerror=()=>alert('Base layer mask পড়া যায়নি।');mask.src=baseImg.src};
+  source.onload=()=>{ctx.drawImage(source,0,0,w,h);mask.onload=()=>{ctx.globalCompositeOperation='destination-in';const dx=parseFloat(base.style.left)-parseFloat(top.style.left),dy=parseFloat(base.style.top)-parseFloat(top.style.top);ctx.drawImage(mask,dx,dy,base.offsetWidth,base.offsetHeight);const url=c.toDataURL('image/png');top.dataset.originalSrc=top.dataset.originalSrc||top.dataset.src;top.dataset.src=url;im.src=url;push();refreshLayerPanel();};mask.onerror=()=>alert('Base layer mask পড়া যায়নি।');mask.src=baseImg.src};
   source.onerror=()=>alert('Selected layer পড়া যায়নি।');source.src=im.src;
  }catch(err){alert('Clipping Mask করা যায়নি: '+err.message)}
 };
@@ -153,7 +159,7 @@ $('files').onchange=e=>addFiles(e.target.files);$('folder').onchange=e=>addFiles
 $('stageWrap').addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.25,Math.min(2.5,zoom+(e.deltaY<0?.1:-.1)));stage.style.transform=`scale(${zoom})`;stage.style.transformOrigin='top center';$('zoomLabel').textContent=Math.round(zoom*100)+'%';},{passive:false});
 $('all').onclick=()=>{chosen=new Set(assets.map(a=>a.id));gallery.querySelectorAll('.thumb').forEach(e=>e.classList.add('selected'));updateCount()};
 $('clearGal').onclick=()=>{assets.forEach(a=>{if(a.url.startsWith('blob:'))URL.revokeObjectURL(a.url)});assets=[];chosen.clear();gallery.innerHTML='';updateCount()};
-function selectObj(el){if(active)active.classList.remove('selected');active=el;if(active){active.classList.add('selected');$('mask').value=active.dataset.mask||'none';if(active.dataset.type==='text'){$('textValue').value=active.dataset.text||active.textContent;$('textSize').value=+(active.dataset.fontSize||32);$('textColor').value=active.dataset.color||'#20243a';$('textFont').value=active.dataset.fontFamily||'Arial, sans-serif'}}}
+function selectObj(el){if(active)active.classList.remove('selected');active=el;if(active){active.classList.add('selected');$('mask').value=active.dataset.mask||'none';if(active.dataset.type==='text'){$('textValue').value=active.dataset.text||active.textContent;$('textSize').value=+(active.dataset.fontSize||32);$('textColor').value=active.dataset.color||'#20243a';$('textFont').value=active.dataset.fontFamily||'Arial, sans-serif'}}if(typeof refreshLayerPanel==='function')refreshLayerPanel()}
 function applyMaskTo(el,shape){el.dataset.mask=shape;const im=el.querySelector('img');let clip='none';if(shape==='circle')clip='circle(50% at 50% 50%)';if(shape==='oval')clip='ellipse(50% 50% at 50% 50%)';if(shape==='rounded')clip='inset(0 round 18%)';if(shape==='diamond')clip='polygon(50% 0,100% 50%,50% 100%,0 50%)';if(shape==='heart')clip='polygon(50% 92%,40% 82%,15% 58%,3% 39%,5% 22%,18% 10%,34% 12%,50% 29%,66% 12%,82% 10%,95% 22%,97% 39%,85% 58%,60% 82%)';im.style.clipPath=clip;im.style.borderRadius=shape==='rounded'?'18%':'0'}
 function createObj(a,x=25,y=25,w=170,h=170,opts={}){const empty=$('empty');if(empty)empty.style.display='none';const el=document.createElement('div');el.className='obj';el.dataset.id=opts.id||a.id;el.dataset.src=opts.src||a.url;el.dataset.type=opts.type||'image';el.dataset.rot=opts.rot||0;el.dataset.mask=opts.mask||'none';el.style.cssText=`left:${x}px;top:${y}px;width:${w}px;height:${h}px;z-index:${opts.z||++z};`;const im=document.createElement('img');im.src=opts.src||a.url;im.draggable=false;im.style.transform=`rotate(${el.dataset.rot}deg)`;el.append(im);const handle=document.createElement('div');handle.className='resize';const ratio=document.createElement('div');ratio.className='ratio';el.append(handle,ratio);stage.append(el);applyMaskTo(el,el.dataset.mask);
 el.addEventListener('pointerdown',e=>{if(e.target===handle||e.target===ratio)return;selectObj(el);const rect=stage.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,l=parseFloat(el.style.left),t=parseFloat(el.style.top),scale=stage.clientWidth/rect.width;const move=ev=>{el.style.left=(l+(ev.clientX-sx)/scale)+'px';el.style.top=(t+(ev.clientY-sy)/scale)+'px'};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);push()};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)});
@@ -186,11 +192,9 @@ function addRemoteImage(item){
 }
 async function checkPhoneUploads(){
  try{
-  const info=await fetch('/api/info',{cache:'no-store'}); if(!info.ok)throw new Error('server');
-  const data=await info.json();
-  if(data.phone_url){const link=$('qrLink'),img=$('qrImage'),btn=$('copyUploadLink');link.href=data.phone_url;img.src='/api/qr?v='+Date.now();link.style.display='block';btn.style.display='block';$('qrStatus').textContent='QR Code তৈরি হয়েছে—মোবাইল দিয়ে স্ক্যান করুন: '+data.phone_url;btn.onclick=()=>alert('মোবাইল আপলোড লিংক:\n'+data.phone_url)}
-  const resp=await fetch('/api/uploads',{cache:'no-store'});if(resp.ok){const items=await resp.json();items.forEach(addRemoteImage)}
- }catch(e){$('qrStatus').textContent='QR আপলোড চালু করতে start_server.bat ফাইলটি চালান। তারপর এই অ্যাপটি যে ঠিকানা দিয়ে খুলবেন, সেই কম্পিউটার ও মোবাইল একই Wi-Fi-তে রাখুন।'}
+  const resp=await fetch('/api/uploads',{cache:'no-store'});
+  if(resp.ok){const items=await resp.json();items.forEach(addRemoteImage)}
+ }catch(e){/* Phone upload bridge is optional; supplied WhatsApp QR remains visible. */}
 }
 checkPhoneUploads();setInterval(checkPhoneUploads,3000);
 setPage('A4',false);push();buttons();
