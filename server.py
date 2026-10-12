@@ -4,7 +4,9 @@ from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from email.parser import BytesParser
 from email.policy import default
-import json, socket, mimetypes, urllib.parse, uuid, os
+import json, socket, mimetypes, urllib.parse, uuid, os, io
+import qrcode
+from qrcode.image.svg import SvgPathImage
 
 ROOT = Path(__file__).resolve().parent
 UPLOADS = ROOT / "uploads"
@@ -39,6 +41,14 @@ class Handler(SimpleHTTPRequestHandler):
         if path == "/api/info":
             body=json.dumps({"phone_url":f"http://{lan_ip()}:{PORT}/mobile"}).encode()
             return self.send_bytes(200,body,"application/json; charset=utf-8")
+        if path == "/api/qr":
+            # Generate a real QR locally for this computer's current Wi-Fi upload URL.
+            url=f"http://{lan_ip()}:{PORT}/mobile"
+            qr=qrcode.QRCode(box_size=8,border=3,error_correction=qrcode.constants.ERROR_CORRECT_M)
+            qr.add_data(url); qr.make(fit=True)
+            image=qr.make_image(image_factory=SvgPathImage)
+            buf=io.BytesIO(); image.save(buf)
+            return self.send_bytes(200,buf.getvalue(),"image/svg+xml; charset=utf-8")
         if path == "/api/uploads":
             items=[]
             for p in sorted(UPLOADS.iterdir(),key=lambda x:x.stat().st_mtime):

@@ -24,11 +24,26 @@ button.secondary,.filebtn.secondary{background:#edf0f8;color:#343b52}button.dang
 .field{display:block;margin:10px 0 5px;font-size:12px;color:#5d657b}input[type=number],select,input[type=text]{width:100%;border:1px solid var(--line);border-radius:7px;padding:8px;background:#fff;color:#20243a}input[type=color]{width:100%;height:35px;border:0;padding:0;background:none}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:7px}.note{font-size:11px;color:#777f91;text-align:center}
 footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
+.head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.whatsapp-btn{display:inline-block;background:#20a65a;color:#fff;text-decoration:none;font-weight:700;border-radius:8px;padding:10px 13px;font-size:12px}
+#printNow{background:#13865b}
+@media print{
+  @page{size:auto;margin:8mm}
+  body{background:#fff!important}
+  header,main>.panel,.toolbar,.note,footer{display:none!important}
+  main{display:block!important;padding:0!important;margin:0!important;max-width:none!important}
+  .center{display:block!important;width:100%!important}
+  #stageWrap{display:block!important;overflow:visible!important;min-height:0!important;max-height:none!important;padding:0!important;background:#fff!important;border-radius:0!important}
+  #stage{transform:none!important;box-shadow:none!important;margin:0 auto!important;page-break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  #empty{display:none!important}
+  .obj.selected{outline:none!important}
+  .obj .resize,.obj .ratio{display:none!important}
+}
 @media(max-width:1100px){main{grid-template-columns:250px minmax(0,1fr)}.right{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#stageWrap{min-height:52vh}}
 @media(max-width:720px){main{grid-template-columns:1fr}.right{grid-column:auto;display:block}#stageWrap{min-height:45vh;padding:8px}#stage{width:min(595px,100%);height:auto;aspect-ratio:595/842}.panel{padding:11px}}
 </style></head>
 <body>
-<header><div><h1>✦ Kiran Creations Frame Studio Pro</h1><small>Multi Photo • A4/A3 • Mask • Undo/Redo • 300 DPI JPG</small></div><small>Standalone browser app • Mouse-wheel Zoom • Text • Background • Clipart</small></header>
+<header><div><h1>✦ Kiran Creations Frame Studio Pro</h1><small>Multi Photo • A4/A3 • Mask • Undo/Redo • 300 DPI JPG</small></div><div class="head-actions"><small>Mouse-wheel Zoom • Text • Background • Clipart</small><a class="whatsapp-btn" href="https://wa.me/917679643645?text=Hello%20Kiran%20Creations%2C%20I%20need%20help%20with%20Frame%20Studio." target="_blank" rel="noopener">🟢 WhatsApp</a></div></header>
 <main>
 <section class="panel">
 <h2>📷 Photo Gallery</h2>
@@ -51,7 +66,7 @@ footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
 <button id="undo" class="secondary">↶ Undo</button><button id="redo" class="secondary">↷ Redo</button>
 <button id="front" class="secondary">সামনে</button><button id="back" class="secondary">পেছনে</button><button id="dup" class="secondary">Duplicate</button><button id="del" class="danger">Delete</button>
 </div>
-<div class="toolbar"><button id="a4">A4 Preview</button><button id="a3" class="secondary">A3 Preview</button><button id="arrange" class="secondary">ছবি সাজান</button><button id="clearCanvas" class="danger">ক্যানভাস খালি</button></div>
+<div class="toolbar"><button id="a4">A4 Preview</button><button id="a3" class="secondary">A3 Preview</button><button id="printNow">🖨️ Print</button><button id="arrange" class="secondary">ছবি সাজান</button><button id="clearCanvas" class="danger">ক্যানভাস খালি</button></div>
 <div class="toolbar"><span class="muted">Preview Zoom (mouse wheel)</span><strong id="zoomLabel">100%</strong><button id="zoomReset" class="secondary">Reset Zoom</button></div><div id="stageWrap"><div id="stage"><div id="empty">বাম দিক থেকে ছবি লোড করুন<br>তারপর ছবি নির্বাচন করে ক্যানভাসে বসান</div></div></div>
 <div class="note">Preview Zoom: মাউসের চাকা ঘোরান • ছবি/Text/Clipart টেনে সরান • সব ফিচার আপনার ব্রাউজারেই</div>
 </section>
@@ -103,11 +118,11 @@ $('dup').onclick=()=>{if(!active)return;if(active.dataset.type==='text'){createT
 $('del').onclick=()=>{if(active){active.remove();active=null;if(!stage.querySelector('.obj'))$('empty').style.display='flex';push()}};
 $('front').onclick=()=>{if(active){active.style.zIndex=++z;push()}};$('back').onclick=()=>{if(active){active.style.zIndex=1;push()}};
 function setPage(p,record=true){page=p;const [w,h]=dims[p];stage.style.width=w+'px';stage.style.height=h+'px';if($('page'))$('page').value=p;$('a4').classList.toggle('secondary',p!=='A4');$('a3').classList.toggle('secondary',p!=='A3');if(record)push()}
-$('a4').onclick=()=>setPage('A4');$('a3').onclick=()=>setPage('A3');if($('page'))$('page').onchange=e=>setPage(e.target.value);$('setBg').onclick=()=>{stage.style.background=$('bg').value;push()};
+$('a4').onclick=()=>setPage('A4');$('a3').onclick=()=>setPage('A3');$('printNow').onclick=()=>{document.documentElement.style.setProperty('--print-page',page);window.print()};if($('page'))$('page').onchange=e=>setPage(e.target.value);$('setBg').onclick=()=>{stage.style.background=$('bg').value;push()};
 $('layoutGo').onclick=()=>{const es=[...stage.querySelectorAll('.obj')],mode=$('layout').value;es.forEach((el,i)=>{if(mode==='grid'){el.style.left=(20+(i%3)*190)+'px';el.style.top=(20+Math.floor(i/3)*190)+'px'}else if(mode==='stack'){el.style.left=(25+i*12)+'px';el.style.top=(25+i*12)+'px'}else{el.style.left=(stage.clientWidth-el.offsetWidth)/2+'px';el.style.top=(stage.clientHeight-el.offsetHeight)/2+'px'}el.style.zIndex=++z});push()};
 $('clearCanvas').onclick=()=>{stage.querySelectorAll('.obj').forEach(e=>e.remove());active=null;$('empty').style.display='flex';push()};
 $('export').onclick=async()=>{if(!stage.querySelector('.obj')){alert('ক্যানভাসে ছবি বসান।');return}if(!window.html2canvas){alert('Export লাইব্রেরি লোড হয়নি। ইন্টারনেট চালু করে আবার চেষ্টা করুন।');return}const dpi=+$('dpi').value,mm=page==='A4'?[210,297]:[297,420],px=mm.map(n=>Math.round(n/25.4*dpi)),oldTransform=stage.style.transform;try{stage.style.transform='none';const canvas=await html2canvas(stage,{scale:px[0]/stage.clientWidth,backgroundColor:stage.style.background||'#ffffff',useCORS:true});stage.style.transform=oldTransform;const out=document.createElement('canvas');out.width=px[0];out.height=px[1];out.getContext('2d').drawImage(canvas,0,0,out.width,out.height);out.toBlob(blob=>{if(!blob){alert('JPG তৈরি হয়নি');return}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Kiran-Creations-${page}-${dpi}DPI.jpg`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)},'image/jpeg',.95)}catch(e){stage.style.transform=`scale(${zoom})`;alert('Export ব্যর্থ হয়েছে: '+e.message)}};
-stage.addEventListener('pointerdown',e=>{if(e.target===stage)selectObj(null)});
+window.addEventListener('afterprint',()=>{stage.style.transform=`scale(${zoom})`});stage.addEventListener('pointerdown',e=>{if(e.target===stage)selectObj(null)});
 // LAN phone-upload bridge: server.py serves the app and accepts uploads from phones on the same Wi-Fi.
 let remoteSeen = new Set();
 function addRemoteImage(item){
@@ -122,7 +137,7 @@ async function checkPhoneUploads(){
  try{
   const info=await fetch('/api/info',{cache:'no-store'}); if(!info.ok)throw new Error('server');
   const data=await info.json();
-  if(data.phone_url){const link=$('qrLink'),img=$('qrImage'),btn=$('copyUploadLink');link.href=data.phone_url;img.src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='+encodeURIComponent(data.phone_url);link.style.display='block';btn.style.display='block';$('qrStatus').textContent='স্ক্যান করুন: '+data.phone_url;btn.onclick=()=>alert('মোবাইল আপলোড লিংক:\n'+data.phone_url)}
+  if(data.phone_url){const link=$('qrLink'),img=$('qrImage'),btn=$('copyUploadLink');link.href=data.phone_url;img.src='/api/qr?v='+Date.now();link.style.display='block';btn.style.display='block';$('qrStatus').textContent='QR Code তৈরি হয়েছে—মোবাইল দিয়ে স্ক্যান করুন: '+data.phone_url;btn.onclick=()=>alert('মোবাইল আপলোড লিংক:\n'+data.phone_url)}
   const resp=await fetch('/api/uploads',{cache:'no-store'});if(resp.ok){const items=await resp.json();items.forEach(addRemoteImage)}
  }catch(e){$('qrStatus').textContent='QR আপলোড চালু করতে start_server.bat ফাইলটি চালান। তারপর এই অ্যাপটি যে ঠিকানা দিয়ে খুলবেন, সেই কম্পিউটার ও মোবাইল একই Wi-Fi-তে রাখুন।'}
 }

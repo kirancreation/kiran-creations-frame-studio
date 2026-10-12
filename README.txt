@@ -20,3 +20,13 @@ NOTES
 • Images are saved in the included uploads folder and shown in the browser gallery.
 • JPG export uses html2canvas from a CDN, so internet is required for export if that library has not loaded.
 • This is a standalone local app ZIP and does not automatically change the GitHub repository.
+
+
+QR CODE UPDATE
+The QR code is generated locally by the bundled Python QR module and appears in the Photo Gallery panel when the app is opened through start_server.bat. No external QR-code website is needed. Keep the server window open, and keep the phone and computer on the same Wi-Fi. Scan the QR displayed inside the app to upload photos directly into the gallery.
+
+
+NEW FEATURES:
+- Print button: choose A4 or A3 Preview first, then click Print and select your printer or Save as PDF in the browser print dialog.
+- WhatsApp button: opens a chat to Kiran Creations at +91 76796 43645.
+Note: This ZIP is a standalone updated copy. To change the live GitHub Pages website, upload/commit the updated index.html (and keep the other existing project files) to the repository.
