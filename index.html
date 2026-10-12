@@ -24,34 +24,17 @@ button.secondary,.filebtn.secondary{background:#edf0f8;color:#343b52}button.dang
 .field{display:block;margin:10px 0 5px;font-size:12px;color:#5d657b}input[type=number],select,input[type=text]{width:100%;border:1px solid var(--line);border-radius:7px;padding:8px;background:#fff;color:#20243a}input[type=color]{width:100%;height:35px;border:0;padding:0;background:none}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:7px}.note{font-size:11px;color:#777f91;text-align:center}
 footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
-.head-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.whatsapp-btn{display:inline-block;background:#20a65a;color:#fff;text-decoration:none;font-weight:700;border-radius:8px;padding:10px 13px;font-size:12px}
-#printNow{background:#13865b}
-@media print{
-  @page{size:auto;margin:8mm}
-  body{background:#fff!important}
-  header,main>.panel,.toolbar,.note,footer{display:none!important}
-  main{display:block!important;padding:0!important;margin:0!important;max-width:none!important}
-  .center{display:block!important;width:100%!important}
-  #stageWrap{display:block!important;overflow:visible!important;min-height:0!important;max-height:none!important;padding:0!important;background:#fff!important;border-radius:0!important}
-  #stage{transform:none!important;box-shadow:none!important;margin:0 auto!important;page-break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact}
-  #empty{display:none!important}
-  .obj.selected{outline:none!important}
-  .obj .resize,.obj .ratio{display:none!important}
-}
 @media(max-width:1100px){main{grid-template-columns:250px minmax(0,1fr)}.right{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#stageWrap{min-height:52vh}}
 @media(max-width:720px){main{grid-template-columns:1fr}.right{grid-column:auto;display:block}#stageWrap{min-height:45vh;padding:8px}#stage{width:min(595px,100%);height:auto;aspect-ratio:595/842}.panel{padding:11px}}
 </style></head>
 <body>
-<header><div><h1>✦ Kiran Creations Frame Studio Pro</h1><small>Multi Photo • A4/A3 • Mask • Undo/Redo • 300 DPI JPG</small></div><div class="head-actions"><small>Mouse-wheel Zoom • Text • Background • Clipart</small><a class="whatsapp-btn" href="https://wa.me/917679643645?text=Hello%20Kiran%20Creations%2C%20I%20need%20help%20with%20Frame%20Studio." target="_blank" rel="noopener">🟢 WhatsApp</a></div></header>
+<header><div><h1>✦ Kiran Creations Frame Studio Pro</h1><small>Multi Photo • A4/A3 • Mask • Undo/Redo • 300 DPI JPG</small></div><small>Standalone browser app • Mouse-wheel Zoom • Text • Background • Clipart</small></header>
 <main>
 <section class="panel">
 <h2>📷 Photo Gallery</h2>
-<label class="filebtn" for="psdFile">🧩 PSD Upload (Editable Layers)</label><input id="psdFile" type="file" accept=".psd,image/vnd.adobe.photoshop,application/octet-stream">
-<div class="muted">PSD আপলোড করলে প্রতিটি visible layer আলাদা object হিসেবে ক্যানভাসে আসবে।</div>
-<h3>🧩 PSD Layer Panel</h3><div id="layerPanel" class="muted" style="max-height:180px;overflow:auto;border:1px solid var(--line);border-radius:7px;padding:5px">PSD আপলোড করুন</div>
-<div class="btns"><button id="clipLayer" class="secondary">Clipping Mask (নিচের Layer)</button></div>
 <label class="filebtn" for="files">+ একসঙ্গে অনেক ছবি লোড</label><input id="files" type="file" accept="image/*" multiple>
+<label class="filebtn secondary" for="passportFiles">🪪 পাসপোর্ট ফটো আপলোড</label><input id="passportFiles" type="file" accept="image/*" multiple capture="user">
+<div class="muted">পাসপোর্ট সাইজের ছবি একসঙ্গে আপলোড করুন। ছবিগুলি গ্যালারিতে যোগ হবে; সেখান থেকে প্রিভিউতে বসাতে পারবেন।</div>
 <label class="filebtn secondary" for="folder">📁 ফোল্ডার থেকে ছবি</label><input id="folder" type="file" accept="image/*" multiple webkitdirectory>
 <div class="muted">গ্যালারি থেকে ছবি বেছে ক্যানভাসে বসান। Ctrl/Shift ছাড়াই একাধিক ছবি নির্বাচন করা যাবে।</div>
 <div class="btns"><button class="secondary" id="all">Select All</button><button class="secondary" id="place">নির্বাচিত বসান</button><button class="danger" id="clearGal">গ্যালারি মুছুন</button></div>
@@ -70,7 +53,7 @@ footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
 <button id="undo" class="secondary">↶ Undo</button><button id="redo" class="secondary">↷ Redo</button>
 <button id="front" class="secondary">সামনে</button><button id="back" class="secondary">পেছনে</button><button id="dup" class="secondary">Duplicate</button><button id="del" class="danger">Delete</button>
 </div>
-<div class="toolbar"><button id="a4">A4 Preview</button><button id="a3" class="secondary">A3 Preview</button><button id="printNow">🖨️ Print</button><button id="arrange" class="secondary">ছবি সাজান</button><button id="clearCanvas" class="danger">ক্যানভাস খালি</button></div>
+<div class="toolbar"><button id="a4">A4 Preview</button><button id="a3" class="secondary">A3 Preview</button><button id="arrange" class="secondary">ছবি সাজান</button><button id="clearCanvas" class="danger">ক্যানভাস খালি</button></div>
 <div class="toolbar"><span class="muted">Preview Zoom (mouse wheel)</span><strong id="zoomLabel">100%</strong><button id="zoomReset" class="secondary">Reset Zoom</button></div><div id="stageWrap"><div id="stage"><div id="empty">বাম দিক থেকে ছবি লোড করুন<br>তারপর ছবি নির্বাচন করে ক্যানভাসে বসান</div></div></div>
 <div class="note">Preview Zoom: মাউসের চাকা ঘোরান • ছবি/Text/Clipart টেনে সরান • সব ফিচার আপনার ব্রাউজারেই</div>
 </section>
@@ -86,7 +69,7 @@ footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
 </div><div>
 <h2>💾 Export JPG</h2><label class="field">DPI</label><select id="dpi"><option value="300">300 DPI (Print)</option><option value="150">150 DPI</option><option value="96">96 DPI (Screen)</option></select>
 <div class="muted">300 DPI-তে A4: 2480 × 3508 px; A3: 3508 × 4961 px।</div>
-<div class="btns"><button id="export">JPG ডাউনলোড</button></div><div class="muted">Export-এর সময় CDN থেকে html2canvas লোড করতে ইন্টারনেট প্রয়োজন।</div>
+<div class="btns"><button id="export">JPG ডাউনলোড</button><button id="shareWhatsApp" class="secondary">WhatsApp-এ JPG পাঠান</button></div><div class="muted">WhatsApp বাটনে JPG তৈরি হবে। ব্রাউজার ফাইল শেয়ার সমর্থন করলে সরাসরি ছবি শেয়ার হবে; না হলে JPG ডাউনলোড করে WhatsApp খুলবে। Export-এর সময় ইন্টারনেট প্রয়োজন।</div>
 </div>
 </aside></main><footer>Kiran Creations Frame Studio Pro • Your images are processed in this browser.</footer>
 <script>
@@ -101,55 +84,8 @@ function restore(s){busy=true;const st=JSON.parse(s);page=st.page;setPage(page,f
 function undo(){if(histIndex>0){histIndex--;restore(history[histIndex])}}function redo(){if(histIndex<history.length-1){histIndex++;restore(history[histIndex])}}
 $('undo').onclick=undo;$('redo').onclick=redo;
 function updateCount(){$('count').textContent=`${assets.length} ছবি লোড • ${chosen.size} নির্বাচন`}
-function refreshLayerPanel(){
- const panel=$('layerPanel'); panel.innerHTML='';
- const objs=[...stage.querySelectorAll('.obj')].sort((a,b)=>(+b.style.zIndex)-(+a.style.zIndex));
- if(!objs.length){panel.textContent='ক্যানভাসে কোনো layer নেই';return}
- objs.forEach((el,i)=>{const row=document.createElement('button');row.type='button';row.className='secondary';row.style.cssText='display:block;width:100%;text-align:left;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
- row.textContent=(el.dataset.layerName||el.dataset.text||el.dataset.type||'Layer')+'  '+(el===active?'✓':'');
- row.onclick=()=>{selectObj(el);refreshLayerPanel()};panel.append(row)})
-}
-function canvasToUrl(canvas){return canvas.toDataURL('image/png')}
-function walkPsdLayers(layers,out=[]){(layers||[]).forEach(layer=>{if(layer.hidden)return;if(layer.canvas && layer.canvas.width && layer.canvas.height)out.push(layer);if(layer.children)walkPsdLayers(layer.children,out)});return out}
-$('psdFile').onchange=async e=>{
- const file=e.target.files&&e.target.files[0];if(!file)return;
- try{
-  if(!window.agPsd||!window.agPsd.readPsd)throw new Error('PSD library load হয়নি। ইন্টারনেট চালু করে আবার চেষ্টা করুন।');
-  const buffer=await file.arrayBuffer();const psd=window.agPsd.readPsd(buffer,{skipLayerImageData:false});
-  const layers=walkPsdLayers(psd.children);
-  if(!layers.length)throw new Error('PSD-তে কোনো visible layer পাওয়া যায়নি।');
-  const pw=psd.width||595,ph=psd.height||842;
-  setPage(pw/ph>0.72?'A3':'A4',false);
-  stage.querySelectorAll('.obj').forEach(o=>o.remove());active=null;$('empty').style.display='none';
-  const scale=Math.min(stage.clientWidth/pw,stage.clientHeight/ph);
-  layers.slice().reverse().forEach((layer,idx)=>{
-   const url=canvasToUrl(layer.canvas);const asset={id:seq++,name:layer.name||('PSD Layer '+(idx+1)),url};
-   assets.push(asset);
-   const el=createObj(asset,(layer.left||0)*scale,(layer.top||0)*scale,layer.canvas.width*scale,layer.canvas.height*scale,{type:'psd-layer'});
-   el.dataset.layerName=layer.name||('PSD Layer '+(idx+1));el.dataset.psdLayer='1';
-   el.title=el.dataset.layerName;
-  });
-  refreshLayerPanel();push();
-  alert(`${layers.length}টি visible PSD layer আলাদা করে লোড হয়েছে। Layer Panel থেকে layer নির্বাচন করে move/resize/delete/duplicate করতে পারবেন।`);
- }catch(err){alert('PSD Upload ব্যর্থ: '+err.message)}
- e.target.value='';
-};
-$('clipLayer').onclick=()=>{
- if(!active){alert('আগে Layer Panel থেকে একটি layer নির্বাচন করুন।');return}
- const objs=[...stage.querySelectorAll('.obj')].sort((a,b)=>(+a.style.zIndex)-(+b.style.zIndex));
- const idx=objs.indexOf(active);if(idx<=0){alert('Clipping Mask-এর জন্য নির্বাচিত layer-এর নিচে একটি base layer থাকতে হবে।');return}
- const base=objs[idx-1], top=active, im=top.querySelector('img'), baseImg=base.querySelector('img');
- try{
-  const w=Math.max(1,Math.round(top.offsetWidth)),h=Math.max(1,Math.round(top.offsetHeight));
-  const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');
-  const source=new Image(), mask=new Image();
-  source.onload=()=>{ctx.drawImage(source,0,0,w,h);mask.onload=()=>{ctx.globalCompositeOperation='destination-in';ctx.drawImage(mask,0,0,w,h);const url=c.toDataURL('image/png');top.dataset.originalSrc=top.dataset.originalSrc||top.dataset.src;top.dataset.src=url;im.src=url;push();refreshLayerPanel();};mask.onerror=()=>alert('Base layer mask পড়া যায়নি।');mask.src=baseImg.src};
-  source.onerror=()=>alert('Selected layer পড়া যায়নি।');source.src=im.src;
- }catch(err){alert('Clipping Mask করা যায়নি: '+err.message)}
-};
-
 function addFiles(fs){[...fs].filter(f=>f.type.startsWith('image/')).forEach(file=>{const url=URL.createObjectURL(file),a={id:seq++,name:file.name,url};assets.push(a);const d=document.createElement('div');d.className='thumb';d.dataset.id=a.id;const im=document.createElement('img');im.src=url;const sp=document.createElement('span');sp.textContent=a.name;d.append(im,sp);d.onclick=()=>{if(chosen.has(a.id)){chosen.delete(a.id);d.classList.remove('selected')}else{chosen.add(a.id);d.classList.add('selected')}updateCount()};gallery.append(d)});updateCount()}
-$('files').onchange=e=>addFiles(e.target.files);$('folder').onchange=e=>addFiles(e.target.files);
+$('files').onchange=e=>addFiles(e.target.files);$('passportFiles').onchange=e=>{addFiles(e.target.files);e.target.value=''};$('folder').onchange=e=>addFiles(e.target.files);
 $('stageWrap').addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.25,Math.min(2.5,zoom+(e.deltaY<0?.1:-.1)));stage.style.transform=`scale(${zoom})`;stage.style.transformOrigin='top center';$('zoomLabel').textContent=Math.round(zoom*100)+'%';},{passive:false});
 $('all').onclick=()=>{chosen=new Set(assets.map(a=>a.id));gallery.querySelectorAll('.thumb').forEach(e=>e.classList.add('selected'));updateCount()};
 $('clearGal').onclick=()=>{assets.forEach(a=>{if(a.url.startsWith('blob:'))URL.revokeObjectURL(a.url)});assets=[];chosen.clear();gallery.innerHTML='';updateCount()};
@@ -158,22 +94,25 @@ function applyMaskTo(el,shape){el.dataset.mask=shape;const im=el.querySelector('
 function createObj(a,x=25,y=25,w=170,h=170,opts={}){const empty=$('empty');if(empty)empty.style.display='none';const el=document.createElement('div');el.className='obj';el.dataset.id=opts.id||a.id;el.dataset.src=opts.src||a.url;el.dataset.type=opts.type||'image';el.dataset.rot=opts.rot||0;el.dataset.mask=opts.mask||'none';el.style.cssText=`left:${x}px;top:${y}px;width:${w}px;height:${h}px;z-index:${opts.z||++z};`;const im=document.createElement('img');im.src=opts.src||a.url;im.draggable=false;im.style.transform=`rotate(${el.dataset.rot}deg)`;el.append(im);const handle=document.createElement('div');handle.className='resize';const ratio=document.createElement('div');ratio.className='ratio';el.append(handle,ratio);stage.append(el);applyMaskTo(el,el.dataset.mask);
 el.addEventListener('pointerdown',e=>{if(e.target===handle||e.target===ratio)return;selectObj(el);const rect=stage.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,l=parseFloat(el.style.left),t=parseFloat(el.style.top),scale=stage.clientWidth/rect.width;const move=ev=>{el.style.left=(l+(ev.clientX-sx)/scale)+'px';el.style.top=(t+(ev.clientY-sy)/scale)+'px'};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);push()};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)});
 function resize(e,free){e.stopPropagation();selectObj(el);const sx=e.clientX,sy=e.clientY,w0=el.offsetWidth,h0=el.offsetHeight,ratio0=w0/h0,rect=stage.getBoundingClientRect(),scale=stage.clientWidth/rect.width;const move=ev=>{let nw=Math.max(20,w0+(ev.clientX-sx)/scale),nh=Math.max(20,h0+(ev.clientY-sy)/scale);if(!free){if(Math.abs(nw-w0)>Math.abs(nh-h0))nh=nw/ratio0;else nw=nh*ratio0}el.style.width=nw+'px';el.style.height=nh+'px';};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);push()};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)}
-handle.addEventListener('pointerdown',e=>resize(e,false));ratio.addEventListener('pointerdown',e=>resize(e,true));el.addEventListener('click',()=>selectObj(el));if(!busy)selectObj(el);refreshLayerPanel();return el}
-function createTextObj(x=40,y=40,w=300,h=90,opts={}){const empty=$('empty');if(empty)empty.style.display='none';const el=document.createElement('div');el.className='obj textobj';el.dataset.id=opts.id||('text-'+seq++);el.dataset.type='text';el.dataset.text=opts.text||$('textValue').value||'আপনার লেখা';el.dataset.color=opts.color||$('textColor').value||'#20243a';el.dataset.fontSize=opts.fontSize||+$('textSize').value||32;el.dataset.fontFamily=opts.fontFamily||$('textFont').value||'Arial, sans-serif';el.dataset.rot=opts.rot||0;el.dataset.mask='none';el.style.cssText=`left:${x}px;top:${y}px;width:${w}px;height:${h}px;z-index:${opts.z||++z};color:${el.dataset.color};font-size:${el.dataset.fontSize}px;font-family:${el.dataset.fontFamily};transform:rotate(${el.dataset.rot}deg);`;el.textContent=el.dataset.text;const handle=document.createElement('div');handle.className='resize';const ratio=document.createElement('div');ratio.className='ratio';el.append(handle,ratio);stage.append(el);el.addEventListener('pointerdown',e=>{if(e.target===handle||e.target===ratio)return;selectObj(el);const sx=e.clientX,sy=e.clientY,l=parseFloat(el.style.left),t=parseFloat(el.style.top),rect=stage.getBoundingClientRect(),scale=stage.clientWidth/rect.width;const move=ev=>{el.style.left=(l+(ev.clientX-sx)/scale)+'px';el.style.top=(t+(ev.clientY-sy)/scale)+'px'};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);push()};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)});function resizeText(e,free){e.stopPropagation();selectObj(el);const sx=e.clientX,sy=e.clientY,w0=el.offsetWidth,h0=el.offsetHeight,r0=w0/h0,rect=stage.getBoundingClientRect(),scale=stage.clientWidth/rect.width;const move=ev=>{let nw=Math.max(40,w0+(ev.clientX-sx)/scale),nh=Math.max(30,h0+(ev.clientY-sy)/scale);if(!free){if(Math.abs(nw-w0)>Math.abs(nh-h0))nh=nw/r0;else nw=nh*r0}el.style.width=nw+'px';el.style.height=nh+'px'};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);push()};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)}handle.addEventListener('pointerdown',e=>resizeText(e,false));ratio.addEventListener('pointerdown',e=>resizeText(e,true));el.addEventListener('click',()=>selectObj(el));if(!busy)selectObj(el);refreshLayerPanel();return el}
+handle.addEventListener('pointerdown',e=>resize(e,false));ratio.addEventListener('pointerdown',e=>resize(e,true));el.addEventListener('click',()=>selectObj(el));if(!busy)selectObj(el);return el}
+function createTextObj(x=40,y=40,w=300,h=90,opts={}){const empty=$('empty');if(empty)empty.style.display='none';const el=document.createElement('div');el.className='obj textobj';el.dataset.id=opts.id||('text-'+seq++);el.dataset.type='text';el.dataset.text=opts.text||$('textValue').value||'আপনার লেখা';el.dataset.color=opts.color||$('textColor').value||'#20243a';el.dataset.fontSize=opts.fontSize||+$('textSize').value||32;el.dataset.fontFamily=opts.fontFamily||$('textFont').value||'Arial, sans-serif';el.dataset.rot=opts.rot||0;el.dataset.mask='none';el.style.cssText=`left:${x}px;top:${y}px;width:${w}px;height:${h}px;z-index:${opts.z||++z};color:${el.dataset.color};font-size:${el.dataset.fontSize}px;font-family:${el.dataset.fontFamily};transform:rotate(${el.dataset.rot}deg);`;el.textContent=el.dataset.text;const handle=document.createElement('div');handle.className='resize';const ratio=document.createElement('div');ratio.className='ratio';el.append(handle,ratio);stage.append(el);el.addEventListener('pointerdown',e=>{if(e.target===handle||e.target===ratio)return;selectObj(el);const sx=e.clientX,sy=e.clientY,l=parseFloat(el.style.left),t=parseFloat(el.style.top),rect=stage.getBoundingClientRect(),scale=stage.clientWidth/rect.width;const move=ev=>{el.style.left=(l+(ev.clientX-sx)/scale)+'px';el.style.top=(t+(ev.clientY-sy)/scale)+'px'};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);push()};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)});function resizeText(e,free){e.stopPropagation();selectObj(el);const sx=e.clientX,sy=e.clientY,w0=el.offsetWidth,h0=el.offsetHeight,r0=w0/h0,rect=stage.getBoundingClientRect(),scale=stage.clientWidth/rect.width;const move=ev=>{let nw=Math.max(40,w0+(ev.clientX-sx)/scale),nh=Math.max(30,h0+(ev.clientY-sy)/scale);if(!free){if(Math.abs(nw-w0)>Math.abs(nh-h0))nh=nw/r0;else nw=nh*r0}el.style.width=nw+'px';el.style.height=nh+'px'};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);push()};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)}handle.addEventListener('pointerdown',e=>resizeText(e,false));ratio.addEventListener('pointerdown',e=>resizeText(e,true));el.addEventListener('click',()=>selectObj(el));if(!busy)selectObj(el);return el}
 $('addText').onclick=()=>{createTextObj(40,40,300,90);push()};$('editText').onclick=()=>{if(!active||active.dataset.type!=='text'){alert('ক্যানভাসে একটি Text নির্বাচন করুন।');return}active.dataset.text=$('textValue').value;active.dataset.color=$('textColor').value;active.dataset.fontSize=+$('textSize').value||32;active.dataset.fontFamily=$('textFont').value;active.textContent=active.dataset.text;active.style.color=active.dataset.color;active.style.fontSize=active.dataset.fontSize+'px';active.style.fontFamily=active.dataset.fontFamily;push()};
 $('bgFile').onchange=e=>{const f=e.target.files[0];if(!f)return;if(bgImageUrl.startsWith('blob:'))URL.revokeObjectURL(bgImageUrl);bgImageUrl=URL.createObjectURL(f);stage.style.backgroundImage=`url("${bgImageUrl}")`;stage.style.backgroundSize='100% 100%';stage.style.backgroundPosition='center';stage.style.backgroundRepeat='no-repeat';push()};$('clearBgImage').onclick=()=>{bgImageUrl='';stage.style.backgroundImage='none';push()};$('zoomReset').onclick=()=>{zoom=1;stage.style.transform='scale(1)';$('zoomLabel').textContent='100%'};
 $('clipFiles').onchange=e=>addFiles(e.target.files);$('addClipart').onclick=()=>{const list=assets.filter(a=>chosen.has(a.id));if(!list.length){alert('Clipart ফাইল লোড করে গ্যালারি থেকে নির্বাচন করুন।');return}list.forEach((a,i)=>{const el=createObj(a,35+i*25,35+i*25,150,150,{type:'clipart'});el.classList.add('clipobj')});push()};$('replaceClipart').onclick=()=>{if(!active||active.dataset.type==='text'){alert('প্রথমে ক্যানভাসের একটি Clipart/ছবি নির্বাচন করুন।');return}const f=$('clipFiles').files[0];if(!f){alert('নতুন Clipart ফাইল লোড করুন।');return}const url=URL.createObjectURL(f);active.dataset.src=url;active.querySelector('img').src=url;active.dataset.type='clipart';active.classList.add('clipobj');push()};
 $('place').onclick=()=>{const list=assets.filter(a=>chosen.has(a.id));if(!list.length){alert('গ্যালারি থেকে ছবি নির্বাচন করুন।');return}list.forEach((a,i)=>createObj(a,20+(i%3)*185,20+Math.floor(i/3)*185));push()};
 $('applyMask').onclick=()=>{if(active){applyMaskTo(active,$('mask').value);push()}};$('resetMask').onclick=()=>{if(active){$('mask').value='none';applyMaskTo(active,'none');push()}};
 $('dup').onclick=()=>{if(!active)return;if(active.dataset.type==='text'){createTextObj(parseFloat(active.style.left)+20,parseFloat(active.style.top)+20,active.offsetWidth,active.offsetHeight,{text:active.dataset.text,color:active.dataset.color,fontSize:active.dataset.fontSize,fontFamily:active.dataset.fontFamily,rot:active.dataset.rot});}else{const a=assets.find(a=>a.url===active.dataset.src)||{id:active.dataset.id,url:active.dataset.src,name:'duplicate'};createObj(a,parseFloat(active.style.left)+20,parseFloat(active.style.top)+20,active.offsetWidth,active.offsetHeight,{rot:active.dataset.rot,mask:active.dataset.mask,type:active.dataset.type});}push()};
-$('del').onclick=()=>{if(active){active.remove();active=null;if(!stage.querySelector('.obj'))$('empty').style.display='flex';refreshLayerPanel();push()}};
+$('del').onclick=()=>{if(active){active.remove();active=null;if(!stage.querySelector('.obj'))$('empty').style.display='flex';push()}};
 $('front').onclick=()=>{if(active){active.style.zIndex=++z;push()}};$('back').onclick=()=>{if(active){active.style.zIndex=1;push()}};
 function setPage(p,record=true){page=p;const [w,h]=dims[p];stage.style.width=w+'px';stage.style.height=h+'px';if($('page'))$('page').value=p;$('a4').classList.toggle('secondary',p!=='A4');$('a3').classList.toggle('secondary',p!=='A3');if(record)push()}
-$('a4').onclick=()=>setPage('A4');$('a3').onclick=()=>setPage('A3');$('printNow').onclick=()=>{document.documentElement.style.setProperty('--print-page',page);window.print()};if($('page'))$('page').onchange=e=>setPage(e.target.value);$('setBg').onclick=()=>{stage.style.background=$('bg').value;push()};
+$('a4').onclick=()=>setPage('A4');$('a3').onclick=()=>setPage('A3');if($('page'))$('page').onchange=e=>setPage(e.target.value);$('setBg').onclick=()=>{stage.style.background=$('bg').value;push()};
 $('layoutGo').onclick=()=>{const es=[...stage.querySelectorAll('.obj')],mode=$('layout').value;es.forEach((el,i)=>{if(mode==='grid'){el.style.left=(20+(i%3)*190)+'px';el.style.top=(20+Math.floor(i/3)*190)+'px'}else if(mode==='stack'){el.style.left=(25+i*12)+'px';el.style.top=(25+i*12)+'px'}else{el.style.left=(stage.clientWidth-el.offsetWidth)/2+'px';el.style.top=(stage.clientHeight-el.offsetHeight)/2+'px'}el.style.zIndex=++z});push()};
-$('clearCanvas').onclick=()=>{stage.querySelectorAll('.obj').forEach(e=>e.remove());active=null;$('empty').style.display='flex';refreshLayerPanel();push()};
-$('export').onclick=async()=>{if(!stage.querySelector('.obj')){alert('ক্যানভাসে ছবি বসান।');return}if(!window.html2canvas){alert('Export লাইব্রেরি লোড হয়নি। ইন্টারনেট চালু করে আবার চেষ্টা করুন।');return}const dpi=+$('dpi').value,mm=page==='A4'?[210,297]:[297,420],px=mm.map(n=>Math.round(n/25.4*dpi)),oldTransform=stage.style.transform;try{stage.style.transform='none';const canvas=await html2canvas(stage,{scale:px[0]/stage.clientWidth,backgroundColor:stage.style.background||'#ffffff',useCORS:true});stage.style.transform=oldTransform;const out=document.createElement('canvas');out.width=px[0];out.height=px[1];out.getContext('2d').drawImage(canvas,0,0,out.width,out.height);out.toBlob(blob=>{if(!blob){alert('JPG তৈরি হয়নি');return}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Kiran-Creations-${page}-${dpi}DPI.jpg`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)},'image/jpeg',.95)}catch(e){stage.style.transform=`scale(${zoom})`;alert('Export ব্যর্থ হয়েছে: '+e.message)}};
-window.addEventListener('afterprint',()=>{stage.style.transform=`scale(${zoom})`});stage.addEventListener('pointerdown',e=>{if(e.target===stage)selectObj(null)});
+$('clearCanvas').onclick=()=>{stage.querySelectorAll('.obj').forEach(e=>e.remove());active=null;$('empty').style.display='flex';push()};
+async function makeJpgBlob(){if(!stage.querySelector('.obj'))throw new Error('ক্যানভাসে ছবি বসান।');if(!window.html2canvas)throw new Error('Export লাইব্রেরি লোড হয়নি। ইন্টারনেট চালু করে আবার চেষ্টা করুন।');const dpi=+$('dpi').value,mm=page==='A4'?[210,297]:[297,420],px=mm.map(n=>Math.round(n/25.4*dpi)),oldTransform=stage.style.transform;const controls=[...stage.querySelectorAll('.resize,.ratio')],oldDisplays=controls.map(e=>e.style.display);try{stage.style.transform='none';controls.forEach(e=>e.style.display='none');const canvas=await html2canvas(stage,{scale:px[0]/stage.clientWidth,backgroundColor:stage.style.background||'#ffffff',useCORS:true});const out=document.createElement('canvas');out.width=px[0];out.height=px[1];out.getContext('2d').drawImage(canvas,0,0,out.width,out.height);return await new Promise((resolve,reject)=>out.toBlob(b=>b?resolve(b):reject(new Error('JPG তৈরি হয়নি')),'image/jpeg',.95))}finally{stage.style.transform=oldTransform;controls.forEach((e,i)=>e.style.display=oldDisplays[i])}}
+function downloadJpg(blob){const dpi=+$('dpi').value,a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=`Kiran-Creations-${page}-${dpi}DPI.jpg`;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000)}
+$('export').onclick=async()=>{try{downloadJpg(await makeJpgBlob())}catch(e){alert('Export ব্যর্থ হয়েছে: '+e.message)}};
+$('shareWhatsApp').onclick=async()=>{try{const blob=await makeJpgBlob(),file=new File([blob],`Kiran-Creations-${page}.jpg`,{type:'image/jpeg'});if(navigator.canShare&&navigator.canShare({files:[file]})&&navigator.share){await navigator.share({files:[file],title:'Kiran Creations Design',text:'আমার ডিজাইনটি দেখুন'});return}downloadJpg(blob);window.open('https://wa.me/?text='+encodeURIComponent('আমার Kiran Creations ডিজাইনটি দেখুন। JPG ছবিটি ডাউনলোড থেকে WhatsApp-এ সংযুক্ত করুন।'),'_blank','noopener');alert('JPG ডাউনলোড হয়েছে। WhatsApp-এ ছবিটি সংযুক্ত করে পাঠিয়ে দিন।')}catch(e){if(e.name!=='AbortError')alert('WhatsApp শেয়ার করা যায়নি: '+e.message)}};
+stage.addEventListener('pointerdown',e=>{if(e.target===stage)selectObj(null)});
 // LAN phone-upload bridge: server.py serves the app and accepts uploads from phones on the same Wi-Fi.
 let remoteSeen = new Set();
 function addRemoteImage(item){
