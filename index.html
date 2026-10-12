@@ -89,7 +89,6 @@ footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
 <div class="btns"><button id="export">JPG ডাউনলোড</button></div><div class="muted">Export-এর সময় CDN থেকে html2canvas লোড করতে ইন্টারনেট প্রয়োজন।</div>
 </div>
 </aside></main><footer>Kiran Creations Frame Studio Pro • Your images are processed in this browser.</footer>
-<script src="https://cdn.jsdelivr.net/npm/ag-psd@31.0.0/dist/bundle.js"></script>
 <script>
 (()=> {
 const $=id=>document.getElementById(id), stage=$('stage'), gallery=$('gallery');
@@ -115,7 +114,7 @@ function walkPsdLayers(layers,out=[]){(layers||[]).forEach(layer=>{if(layer.hidd
 $('psdFile').onchange=async e=>{
  const file=e.target.files&&e.target.files[0];if(!file)return;
  try{
-  if(!window.agPsd||!window.agPsd.readPsd)throw new Error('PSD লাইব্রেরি লোড হয়নি। ইন্টারনেট চালু করুন, তারপর পেজ Refresh করে আবার PSD Upload করুন।');
+  if(!window.agPsd||!window.agPsd.readPsd)throw new Error('PSD library load হয়নি। ইন্টারনেট চালু করে আবার চেষ্টা করুন।');
   const buffer=await file.arrayBuffer();const psd=window.agPsd.readPsd(buffer,{skipLayerImageData:false});
   const layers=walkPsdLayers(psd.children);
   if(!layers.length)throw new Error('PSD-তে কোনো visible layer পাওয়া যায়নি।');
