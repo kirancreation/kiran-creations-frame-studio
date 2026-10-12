@@ -1,115 +1,108 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kiran Creations Frame Studio — Multi Photo</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kiran Creations Frame Studio Pro</title>
 <style>
-:root{--bg:#f3f5f9;--panel:#fff;--ink:#202636;--accent:#6c4cf1;--line:#dfe4ee}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:var(--bg);color:var(--ink)}
-header{background:#171b2d;color:#fff;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-header h1{font-size:20px;margin:0}header small{color:#c9cde0}
-main{display:grid;grid-template-columns:290px minmax(0,1fr) 250px;gap:14px;padding:14px;max-width:1600px;margin:auto}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:0 3px 12px #1a24400a;min-width:0}
-h2{font-size:15px;margin:0 0 12px}.hint{font-size:12px;color:#6d7588;line-height:1.5}
-button,.filebtn{border:0;border-radius:8px;padding:10px 12px;background:var(--accent);color:white;font-weight:700;cursor:pointer;font-size:13px}
-button.secondary{background:#edf0f7;color:#333b50}button.danger{background:#dc4056}.btnrow{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
-input[type=file]{display:none}.filebtn{display:block;text-align:center;margin-bottom:8px}
-#gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px;max-height:55vh;overflow:auto}
-.thumb{position:relative;border:2px solid transparent;border-radius:8px;overflow:hidden;background:#f0f2f8;aspect-ratio:1;cursor:pointer}
-.thumb img{width:100%;height:100%;object-fit:cover;display:block}.thumb span{position:absolute;bottom:0;left:0;right:0;background:#111b;color:white;font-size:10px;padding:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.thumb.selected{border-color:var(--accent)}.count{font-size:12px;color:#666e81;margin-top:7px}
-.workspace{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
-.toolbar{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;width:100%}
-#stageWrap{width:min(100%,720px);background:#e4e8f0;border-radius:12px;padding:18px;display:flex;justify-content:center;align-items:flex-start;overflow:auto;min-height:65vh}
-#stage{width:595px;height:842px;max-width:100%;position:relative;background:white;box-shadow:0 4px 22px #20284030;overflow:hidden;flex-shrink:0;transform-origin:top center}
-.stage-note{font-size:12px;color:#6d7588;text-align:center}
-.photo{position:absolute;left:30px;top:30px;width:170px;height:170px;object-fit:cover;border:1px solid #fff;box-shadow:0 2px 7px #0003;cursor:move;user-select:none;touch-action:none}
-.photo.active{outline:2px solid var(--accent);outline-offset:2px}
-label.field{font-size:12px;color:#5e6679;display:block;margin:12px 0 5px}
-input[type=number],input[type=text],select{width:100%;padding:9px;border:1px solid var(--line);border-radius:7px;background:white}
-#empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:#9aa1b1;padding:35px;pointer-events:none;font-size:17px}
-footer{text-align:center;color:#7d8495;font-size:11px;padding:10px 0 20px}
-@media(max-width:1050px){main{grid-template-columns:260px minmax(0,1fr)}.rightpanel{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}#stageWrap{min-height:55vh}}
-@media(max-width:700px){main{grid-template-columns:1fr}.rightpanel{grid-column:auto;display:block}#stageWrap{min-height:45vh;padding:10px}#stage{width:100%;height:auto;aspect-ratio:595/842}.panel{padding:12px}}
-</style>
-</head>
+:root{--purple:#6544df;--ink:#20243a;--muted:#697187;--line:#e0e4ef;--panel:#fff;--bg:#f3f5fa}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px Arial,"Noto Sans Bengali",sans-serif}
+header{background:#191b2d;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1{font-size:19px;margin:0 0 4px}header small{color:#c9cde0}
+main{display:grid;grid-template-columns:275px minmax(300px,1fr) 245px;gap:12px;padding:12px;max-width:1700px;margin:auto}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px;min-width:0;box-shadow:0 3px 12px #1b22400a}
+h2{font-size:15px;margin:0 0 12px}h3{font-size:13px;margin:14px 0 8px}.muted{color:var(--muted);font-size:12px;line-height:1.5}
+button,.filebtn{border:0;border-radius:8px;padding:9px 11px;background:var(--purple);color:#fff;font-weight:700;cursor:pointer;font-size:12px}
+button.secondary,.filebtn.secondary{background:#edf0f8;color:#343b52}button.danger{background:#d83c55}button:disabled{opacity:.4;cursor:not-allowed}
+.btns{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.filebtn{display:block;text-align:center;margin:7px 0}input[type=file]{display:none}
+#gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;max-height:47vh;overflow:auto;margin-top:10px}
+.thumb{position:relative;aspect-ratio:1;border:2px solid transparent;border-radius:7px;overflow:hidden;background:#eef0f6;cursor:pointer}.thumb img{width:100%;height:100%;object-fit:cover}.thumb.selected{border-color:var(--purple)}.thumb span{position:absolute;bottom:0;left:0;right:0;background:#111c;color:white;font-size:9px;padding:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.count{font-size:11px;color:var(--muted);margin-top:8px}
+.center{display:flex;flex-direction:column;gap:9px;align-items:center;min-width:0}.toolbar{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;width:100%}
+#stageWrap{width:100%;min-height:65vh;max-height:80vh;overflow:auto;background:#e3e7f0;border-radius:12px;padding:16px;display:flex;justify-content:center;align-items:flex-start}
+#stage{width:595px;height:842px;position:relative;background:#fff;overflow:hidden;box-shadow:0 4px 20px #151b3330;flex:0 0 auto;transform-origin:top center}
+#empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:#a1a7b5;padding:30px;pointer-events:none;line-height:1.8}
+.obj{position:absolute;box-sizing:border-box;touch-action:none;user-select:none}.obj.selected{outline:2px solid var(--purple);outline-offset:1px}.obj img{width:100%;height:100%;display:block;object-fit:cover;pointer-events:none}.obj .resize{position:absolute;right:-6px;bottom:-6px;width:13px;height:13px;border-radius:50%;background:var(--purple);border:2px solid white;cursor:nwse-resize;z-index:999}.obj .ratio{position:absolute;right:-6px;top:-6px;width:12px;height:12px;border-radius:50%;background:#12a58b;border:2px solid white;cursor:nesw-resize}
+.field{display:block;margin:10px 0 5px;font-size:12px;color:#5d657b}input[type=number],select,input[type=text]{width:100%;border:1px solid var(--line);border-radius:7px;padding:8px;background:#fff;color:#20243a}input[type=color]{width:100%;height:35px;border:0;padding:0;background:none}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:7px}.note{font-size:11px;color:#777f91;text-align:center}
+footer{text-align:center;font-size:11px;color:#7d8495;padding:10px}
+@media(max-width:1100px){main{grid-template-columns:250px minmax(0,1fr)}.right{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}#stageWrap{min-height:52vh}}
+@media(max-width:720px){main{grid-template-columns:1fr}.right{grid-column:auto;display:block}#stageWrap{min-height:45vh;padding:8px}#stage{width:min(595px,100%);height:auto;aspect-ratio:595/842}.panel{padding:11px}}
+</style></head>
 <body>
-<header><div><h1>✦ Kiran Creations Frame Studio</h1><small>Multi Photo Upload • A4 Design Workspace</small></div><small>Offline browser app</small></header>
+<header><div><h1>✦ Kiran Creations Frame Studio Pro</h1><small>Multi Photo • A4/A3 • Mask • Undo/Redo • 300 DPI JPG</small></div><small>Standalone browser app</small></header>
 <main>
 <section class="panel">
-<h2>📷 ছবি লোড করুন</h2>
-<label class="filebtn" for="photoFiles">+ একসঙ্গে অনেক ছবি নির্বাচন</label>
-<input id="photoFiles" type="file" accept="image/*" multiple>
-<label class="filebtn secondary" for="folderFiles" style="background:#edf0f7;color:#333b50">📁 ফোল্ডার থেকে ছবি</label>
-<input id="folderFiles" type="file" accept="image/*" multiple webkitdirectory directory>
-<div class="hint">একবারে একাধিক JPG, PNG, WebP ছবি বেছে নিন। ছবিগুলি এই ব্রাউজারেই প্রসেস হবে।</div>
-<div class="btnrow"><button class="secondary" id="addSelected">নির্বাচিত ছবি বসান</button><button class="secondary" id="selectAll">সব নির্বাচন</button></div>
-<div class="btnrow"><button class="danger" id="clearGallery">গ্যালারি খালি</button></div>
-<div class="count" id="count">কোনও ছবি লোড হয়নি</div>
-<div id="gallery"></div>
+<h2>📷 Photo Gallery</h2>
+<label class="filebtn" for="files">+ একসঙ্গে অনেক ছবি লোড</label><input id="files" type="file" accept="image/*" multiple>
+<label class="filebtn secondary" for="folder">📁 ফোল্ডার থেকে ছবি</label><input id="folder" type="file" accept="image/*" multiple webkitdirectory>
+<div class="muted">গ্যালারি থেকে ছবি বেছে ক্যানভাসে বসান। Ctrl/Shift ছাড়াই একাধিক ছবি নির্বাচন করা যাবে।</div>
+<div class="btns"><button class="secondary" id="all">Select All</button><button class="secondary" id="place">নির্বাচিত বসান</button><button class="danger" id="clearGal">গ্যালারি মুছুন</button></div>
+<div id="count" class="count">0 ছবি</div><div id="gallery"></div>
+<h3>Clipping Mask</h3><div class="muted">ক্যানভাসে একটি ছবি নির্বাচন করে Mask Shape প্রয়োগ করুন।</div>
+<select id="mask"><option value="none">No mask / Rectangle</option><option value="circle">Circle</option><option value="oval">Oval</option><option value="rounded">Rounded rectangle</option><option value="heart">Heart</option><option value="diamond">Diamond</option></select>
+<div class="btns"><button id="applyMask">Mask প্রয়োগ</button><button class="secondary" id="resetMask">Mask সরান</button></div>
 </section>
-<section class="workspace">
+<section class="center">
 <div class="toolbar">
-<button id="fit">A4 প্রিভিউ</button><button class="secondary" id="bringFront">সামনে আনুন</button><button class="secondary" id="sendBack">পেছনে পাঠান</button>
-<button class="secondary" id="duplicate">Duplicate</button><button class="danger" id="deletePhoto">ছবি মুছুন</button>
+<button id="undo" class="secondary">↶ Undo</button><button id="redo" class="secondary">↷ Redo</button>
+<button id="front" class="secondary">সামনে</button><button id="back" class="secondary">পেছনে</button><button id="dup" class="secondary">Duplicate</button><button id="del" class="danger">Delete</button>
 </div>
-<div id="stageWrap"><div id="stage"><div id="empty">বাম দিক থেকে ছবি লোড করে<br>“নির্বাচিত ছবি বসান” চাপুন</div></div></div>
-<div class="stage-note">ছবি মাউস দিয়ে টেনে সরান • কোণার হ্যান্ডেল টেনে সাইজ পরিবর্তন করুন</div>
+<div class="toolbar"><button id="a4">A4 Preview</button><button id="a3" class="secondary">A3 Preview</button><button id="arrange" class="secondary">ছবি সাজান</button><button id="clearCanvas" class="danger">ক্যানভাস খালি</button></div>
+<div id="stageWrap"><div id="stage"><div id="empty">বাম দিক থেকে ছবি লোড করুন<br>তারপর ছবি নির্বাচন করে ক্যানভাসে বসান</div></div></div>
+<div class="note">ছবি টেনে সরান • কোণার হ্যান্ডেল টেনে সমান অনুপাতে বড়/ছোট করুন • Shift ছাড়াই ratio lock</div>
 </section>
-<aside class="panel rightpanel">
-<div>
-<h2>⚙️ Photo Settings</h2>
-<label class="field">প্রস্থ (px)</label><input id="photoW" type="number" min="20" max="1200" value="170">
-<label class="field">উচ্চতা (px)</label><input id="photoH" type="number" min="20" max="1600" value="170">
-<label class="field">ঘোরানো (ডিগ্রি)</label><input id="photoRotate" type="number" min="-360" max="360" value="0">
-<div class="btnrow"><button id="applySize">পরিবর্তন করুন</button></div>
+<aside class="panel right">
+<div><h2>⚙️ Photo Settings</h2>
+<div class="row2"><div><label class="field">Width (px)</label><input id="w" type="number" min="10" value="170"></div><div><label class="field">Height (px)</label><input id="h" type="number" min="10" value="170"></div></div>
+<label class="field">Rotation (degree)</label><input id="rot" type="number" value="0" min="-360" max="360">
+<div class="btns"><button id="applySize">Apply Size</button><button id="equal" class="secondary">সমান অনুপাত</button></div>
+<h3>Canvas</h3><label class="field">Page Size</label><select id="page"><option value="A4">A4 — 210 × 297 mm</option><option value="A3">A3 — 297 × 420 mm</option></select>
+<label class="field">Background colour</label><input id="bg" type="color" value="#ffffff">
+<div class="btns"><button id="setBg" class="secondary">রং প্রয়োগ</button></div>
+<label class="field">Layout</label><select id="layout"><option value="grid">Grid / পাশাপাশি</option><option value="stack">Stack</option><option value="center">Center</option></select>
+<div class="btns"><button id="layoutGo">Layout সাজান</button></div>
+</div><div>
+<h2>💾 Export JPG</h2><label class="field">DPI</label><select id="dpi"><option value="300">300 DPI (Print)</option><option value="150">150 DPI</option><option value="96">96 DPI (Screen)</option></select>
+<div class="muted">300 DPI-তে A4: 2480 × 3508 px; A3: 3508 × 4961 px।</div>
+<div class="btns"><button id="export">JPG ডাউনলোড</button></div><div class="muted">Export-এর সময় CDN থেকে html2canvas লোড করতে ইন্টারনেট প্রয়োজন।</div>
 </div>
-<div>
-<h2>🧾 Canvas</h2>
-<label class="field">ব্যাকগ্রাউন্ড রং</label><input id="bgColor" type="color" value="#ffffff" style="width:100%;height:38px;border:0">
-<div class="btnrow"><button class="secondary" id="applyBg">রং প্রয়োগ</button></div>
-<label class="field">নতুন ছবি বসানোর লেআউট</label>
-<select id="layout"><option value="grid">Grid / পাশাপাশি</option><option value="stack">একটার উপর আরেকটা</option><option value="center">মাঝখানে</option></select>
-<div class="btnrow"><button id="arrange">ছবি সাজান</button></div>
-</div>
-<div>
-<h2>💾 Export</h2>
-<div class="hint">বর্তমান A4 ডিজাইন PNG হিসেবে সেভ করুন। ব্রাউজারের নিরাপত্তা নীতির কারণে রপ্তানির আগে ছবি সম্পূর্ণ লোড হতে দিন।</div>
-<div class="btnrow"><button id="exportPng">PNG ডাউনলোড</button></div>
-<div class="btnrow"><button class="secondary" id="clearCanvas">ক্যানভাস খালি</button></div>
-</div>
-</aside>
-</main>
-<footer>Kiran Creations Frame Studio • Images stay in your browser unless you export them.</footer>
+</aside></main><footer>Kiran Creations Frame Studio Pro • Your images are processed in this browser.</footer>
 <script>
+(()=> {
 const $=id=>document.getElementById(id), stage=$('stage'), gallery=$('gallery');
-let photos=[], selectedGallery=new Set(), active=null, z=2, nextId=1;
-function updateCount(){ $('count').textContent=photos.length?`${photos.length}টি ছবি লোড হয়েছে • ${selectedGallery.size}টি নির্বাচন`:'কোনও ছবি লোড হয়নি'; }
-function addFiles(files){[...files].filter(f=>f.type.startsWith('image/')).forEach(file=>{const url=URL.createObjectURL(file), item={id:nextId++,name:file.name,url};photos.push(item);const d=document.createElement('div');d.className='thumb';d.dataset.id=item.id;const im=document.createElement('img');im.src=url;const sp=document.createElement('span');sp.textContent=file.name;d.append(im,sp);d.onclick=()=>{if(selectedGallery.has(item.id)){selectedGallery.delete(item.id);d.classList.remove('selected')}else{selectedGallery.add(item.id);d.classList.add('selected')}updateCount()};gallery.append(d)});updateCount();}
-$('photoFiles').onchange=e=>addFiles(e.target.files);$('folderFiles').onchange=e=>addFiles(e.target.files);
-$('selectAll').onclick=()=>{selectedGallery=new Set(photos.map(p=>p.id));gallery.querySelectorAll('.thumb').forEach(t=>t.classList.add('selected'));updateCount()};
-$('clearGallery').onclick=()=>{photos.forEach(p=>URL.revokeObjectURL(p.url));photos=[];selectedGallery.clear();gallery.innerHTML='';updateCount()};
-function hideEmpty(){const e=$('empty');if(e)e.style.display='none'}
-function makePhoto(item,x=30,y=30,w=170,h=170){hideEmpty();const img=document.createElement('img');img.src=item.url;img.className='photo';img.dataset.id=item.id;img.style.left=x+'px';img.style.top=y+'px';img.style.width=w+'px';img.style.height=h+'px';img.style.zIndex=++z;img.style.objectFit='cover';img.draggable=false;
-const handle=document.createElement('div');handle.style.cssText='position:absolute;width:12px;height:12px;background:#6c4cf1;border:2px solid white;border-radius:50%;right:-5px;bottom:-5px;cursor:nwse-resize;z-index:9999';
-const wrap=document.createElement('div');wrap.style.cssText=`position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;z-index:${z};`;wrap.dataset.id=item.id;wrap.className='placed';wrap.appendChild(img);wrap.appendChild(handle);
-img.style.position='absolute';img.style.left='0';img.style.top='0';img.style.width='100%';img.style.height='100%';
-wrap.addEventListener('pointerdown',e=>{if(e.target===handle)return;setActive(wrap);const rect=stage.getBoundingClientRect(),startX=e.clientX,startY=e.clientY,l=parseFloat(wrap.style.left),t=parseFloat(wrap.style.top);wrap.setPointerCapture?.(e.pointerId);function move(ev){wrap.style.left=Math.max(-100,l+(ev.clientX-startX)*stage.clientWidth/rect.width)+'px';wrap.style.top=Math.max(-100,t+(ev.clientY-startY)*stage.clientWidth/rect.width)+'px'}function up(){window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up)}window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)});
-handle.addEventListener('pointerdown',e=>{e.stopPropagation();setActive(wrap);const sx=e.clientX,sy=e.clientY,w0=wrap.offsetWidth,h0=wrap.offsetHeight;function move(ev){const scale=stage.clientWidth/stage.getBoundingClientRect().width;wrap.style.width=Math.max(25,w0+(ev.clientX-sx)/scale)+'px';wrap.style.height=Math.max(25,h0+(ev.clientY-sy)/scale)+'px';syncSettings()}function up(){window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up)}window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)});
-wrap.addEventListener('click',()=>setActive(wrap));stage.appendChild(wrap);setActive(wrap);return wrap}
-function setActive(el){if(active)active.querySelector('img')?.classList.remove('active');active=el;if(active){active.querySelector('img').classList.add('active');syncSettings()}}
-function syncSettings(){if(!active)return;$('photoW').value=Math.round(active.offsetWidth);$('photoH').value=Math.round(active.offsetHeight);$('photoRotate').value=parseInt(active.dataset.rotate||'0')}
-$('addSelected').onclick=()=>{const chosen=photos.filter(p=>selectedGallery.has(p.id));chosen.forEach((p,i)=>makePhoto(p,25+(i%3)*185,25+Math.floor(i/3)*185));if(!chosen.length&&photos.length)alert('আগে গ্যালারি থেকে ছবি নির্বাচন করুন।')};
-$('applySize').onclick=()=>{if(!active)return;active.style.width=Math.max(20,+$('photoW').value)+'px';active.style.height=Math.max(20,+$('photoH').value)+'px';const r=+$('photoRotate').value;active.dataset.rotate=r;active.querySelector('img').style.transform=`rotate(${r}deg)`};
-$('deletePhoto').onclick=()=>{if(!active)return;const old=active;active=null;old.remove();const remaining=stage.querySelectorAll('.placed').length;if(!remaining){$('empty').style.display='flex'}};
-$('duplicate').onclick=()=>{if(!active)return;const im=active.querySelector('img'), item=photos.find(p=>p.id===+active.dataset.id);if(item)makePhoto(item,parseFloat(active.style.left)+20,parseFloat(active.style.top)+20,active.offsetWidth,active.offsetHeight)};
-$('bringFront').onclick=()=>{if(active)active.style.zIndex=++z};$('sendBack').onclick=()=>{if(active)active.style.zIndex=1};
-$('applyBg').onclick=()=>stage.style.background=$('bgColor').value;
-$('arrange').onclick=()=>{const els=[...stage.querySelectorAll('.placed')],mode=$('layout').value;els.forEach((el,i)=>{if(mode==='grid'){el.style.left=(20+(i%3)*190)+'px';el.style.top=(20+Math.floor(i/3)*190)+'px'}else if(mode==='stack'){el.style.left=(30+i*12)+'px';el.style.top=(30+i*12)+'px'}else{el.style.left=(stage.clientWidth-el.offsetWidth)/2+'px';el.style.top=(stage.clientHeight-el.offsetHeight)/2+'px'}el.style.zIndex=++z})};
-$('clearCanvas').onclick=()=>{stage.querySelectorAll('.placed').forEach(e=>e.remove());active=null;$('empty').style.display='flex'};
-$('fit').onclick=()=>{stage.style.width='595px';stage.style.height='842px'};
-$('exportPng').onclick=async()=>{if(!stage.querySelector('.placed')){alert('আগে ক্যানভাসে ছবি বসান।');return}if(!window.html2canvas){alert('PNG export লাইব্রেরি লোড হয়নি। ইন্টারনেট চালু করে আবার চেষ্টা করুন।');return}try{const c=await html2canvas(stage,{scale:2,useCORS:true,backgroundColor:null});const a=document.createElement('a');a.download='Kiran-Creations-A4.png';a.href=c.toDataURL('image/png');a.click()}catch(e){alert('PNG export করা যায়নি। আবার চেষ্টা করুন।')}};
+let assets=[], chosen=new Set(), active=null, z=2, seq=1, history=[], histIndex=-1, busy=false, page='A4';
+const dims={A4:[595,842],A3:[842,1191]};
+function snapshot(){return {page, bg:stage.style.background, objs:[...stage.querySelectorAll('.obj')].map(e=>({id:e.dataset.id,src:e.dataset.src,x:parseFloat(e.style.left),y:parseFloat(e.style.top),w:e.offsetWidth,h:e.offsetHeight,rot:+(e.dataset.rot||0),mask:e.dataset.mask||'none',z:+e.style.zIndex}))}}
+function push(){if(busy)return;const s=JSON.stringify(snapshot());if(history[histIndex]===s)return;history=history.slice(0,histIndex+1);history.push(s);if(history.length>80)history.shift();histIndex=history.length-1;buttons()}
+function buttons(){$('undo').disabled=histIndex<=0;$('redo').disabled=histIndex>=history.length-1}
+function restore(s){busy=true;const st=JSON.parse(s);page=st.page;setPage(page,false);stage.style.background=st.bg||'#fff';stage.querySelectorAll('.obj').forEach(e=>e.remove());active=null;st.objs.forEach(o=>{const asset=assets.find(a=>a.url===o.src)||{url:o.src,name:'restored'};createObj(asset,o.x,o.y,o.w,o.h,o)});busy=false;selectObj(null);buttons()}
+function undo(){if(histIndex>0){histIndex--;restore(history[histIndex])}}function redo(){if(histIndex<history.length-1){histIndex++;restore(history[histIndex])}}
+$('undo').onclick=undo;$('redo').onclick=redo;
+function updateCount(){$('count').textContent=`${assets.length} ছবি লোড • ${chosen.size} নির্বাচন`}
+function addFiles(fs){[...fs].filter(f=>f.type.startsWith('image/')).forEach(file=>{const url=URL.createObjectURL(file),a={id:seq++,name:file.name,url};assets.push(a);const d=document.createElement('div');d.className='thumb';d.dataset.id=a.id;const im=document.createElement('img');im.src=url;const sp=document.createElement('span');sp.textContent=a.name;d.append(im,sp);d.onclick=()=>{if(chosen.has(a.id)){chosen.delete(a.id);d.classList.remove('selected')}else{chosen.add(a.id);d.classList.add('selected')}updateCount()};gallery.append(d)});updateCount()}
+$('files').onchange=e=>addFiles(e.target.files);$('folder').onchange=e=>addFiles(e.target.files);
+$('all').onclick=()=>{chosen=new Set(assets.map(a=>a.id));gallery.querySelectorAll('.thumb').forEach(e=>e.classList.add('selected'));updateCount()};
+$('clearGal').onclick=()=>{assets.forEach(a=>{if(a.url.startsWith('blob:'))URL.revokeObjectURL(a.url)});assets=[];chosen.clear();gallery.innerHTML='';updateCount()};
+function selectObj(el){if(active)active.classList.remove('selected');active=el;if(active){active.classList.add('selected');$('w').value=Math.round(active.offsetWidth);$('h').value=Math.round(active.offsetHeight);$('rot').value=+(active.dataset.rot||0);$('mask').value=active.dataset.mask||'none'}}
+function applyMaskTo(el,shape){el.dataset.mask=shape;const im=el.querySelector('img');let clip='none';if(shape==='circle')clip='circle(50% at 50% 50%)';if(shape==='oval')clip='ellipse(50% 50% at 50% 50%)';if(shape==='rounded')clip='inset(0 round 18%)';if(shape==='diamond')clip='polygon(50% 0,100% 50%,50% 100%,0 50%)';if(shape==='heart')clip='polygon(50% 92%,40% 82%,15% 58%,3% 39%,5% 22%,18% 10%,34% 12%,50% 29%,66% 12%,82% 10%,95% 22%,97% 39%,85% 58%,60% 82%)';im.style.clipPath=clip;im.style.borderRadius=shape==='rounded'?'18%':'0'}
+function createObj(a,x=25,y=25,w=170,h=170,opts={}){const empty=$('empty');if(empty)empty.style.display='none';const el=document.createElement('div');el.className='obj';el.dataset.id=opts.id||a.id;el.dataset.src=opts.src||a.url;el.dataset.rot=opts.rot||0;el.dataset.mask=opts.mask||'none';el.style.cssText=`left:${x}px;top:${y}px;width:${w}px;height:${h}px;z-index:${opts.z||++z};`;const im=document.createElement('img');im.src=opts.src||a.url;im.draggable=false;im.style.transform=`rotate(${el.dataset.rot}deg)`;el.append(im);const handle=document.createElement('div');handle.className='resize';const ratio=document.createElement('div');ratio.className='ratio';el.append(handle,ratio);stage.append(el);applyMaskTo(el,el.dataset.mask);
+el.addEventListener('pointerdown',e=>{if(e.target===handle||e.target===ratio)return;selectObj(el);const rect=stage.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,l=parseFloat(el.style.left),t=parseFloat(el.style.top),scale=stage.clientWidth/rect.width;const move=ev=>{el.style.left=(l+(ev.clientX-sx)/scale)+'px';el.style.top=(t+(ev.clientY-sy)/scale)+'px'};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);push()};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)});
+function resize(e,free){e.stopPropagation();selectObj(el);const sx=e.clientX,sy=e.clientY,w0=el.offsetWidth,h0=el.offsetHeight,ratio0=w0/h0,rect=stage.getBoundingClientRect(),scale=stage.clientWidth/rect.width;const move=ev=>{let nw=Math.max(20,w0+(ev.clientX-sx)/scale),nh=Math.max(20,h0+(ev.clientY-sy)/scale);if(!free){if(Math.abs(nw-w0)>Math.abs(nh-h0))nh=nw/ratio0;else nw=nh*ratio0}el.style.width=nw+'px';el.style.height=nh+'px';$('w').value=Math.round(nw);$('h').value=Math.round(nh)};const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);push()};window.addEventListener('pointermove',move);window.addEventListener('pointerup',up)}
+handle.addEventListener('pointerdown',e=>resize(e,false));ratio.addEventListener('pointerdown',e=>resize(e,true));el.addEventListener('click',()=>selectObj(el));if(!busy)selectObj(el);return el}
+$('place').onclick=()=>{const list=assets.filter(a=>chosen.has(a.id));if(!list.length){alert('গ্যালারি থেকে ছবি নির্বাচন করুন।');return}list.forEach((a,i)=>createObj(a,20+(i%3)*185,20+Math.floor(i/3)*185));push()};
+$('applySize').onclick=()=>{if(!active)return;const w=Math.max(10,+$('w').value||10),h=Math.max(10,+$('h').value||10);active.style.width=w+'px';active.style.height=h+'px';active.querySelector('img').style.transform=`rotate(${$('rot').value}deg)`;active.dataset.rot=+$('rot').value;push()};
+$('equal').onclick=()=>{if(!active)return;const oldW=active.offsetWidth,oldH=active.offsetHeight,ratio=oldW/oldH;const w=Math.max(10,+$('w').value||oldW);active.style.width=w+'px';active.style.height=(w/ratio)+'px';$('w').value=Math.round(w);$('h').value=Math.round(w/ratio);push()};
+$('applyMask').onclick=()=>{if(active){applyMaskTo(active,$('mask').value);push()}};$('resetMask').onclick=()=>{if(active){$('mask').value='none';applyMaskTo(active,'none');push()}};
+$('dup').onclick=()=>{if(!active)return;const a=assets.find(a=>a.url===active.dataset.src)||{id:active.dataset.id,url:active.dataset.src,name:'duplicate'};createObj(a,parseFloat(active.style.left)+20,parseFloat(active.style.top)+20,active.offsetWidth,active.offsetHeight,{rot:active.dataset.rot,mask:active.dataset.mask});push()};
+$('del').onclick=()=>{if(active){active.remove();active=null;if(!stage.querySelector('.obj'))$('empty').style.display='flex';push()}};
+$('front').onclick=()=>{if(active){active.style.zIndex=++z;push()}};$('back').onclick=()=>{if(active){active.style.zIndex=1;push()}};
+function setPage(p,record=true){page=p;const [w,h]=dims[p];stage.style.width=w+'px';stage.style.height=h+'px';$('page').value=p;$('a4').classList.toggle('secondary',p!=='A4');$('a3').classList.toggle('secondary',p!=='A3');if(record)push()}
+$('a4').onclick=()=>setPage('A4');$('a3').onclick=()=>setPage('A3');$('page').onchange=e=>setPage(e.target.value);$('setBg').onclick=()=>{stage.style.background=$('bg').value;push()};
+$('layoutGo').onclick=()=>{const es=[...stage.querySelectorAll('.obj')],mode=$('layout').value;es.forEach((el,i)=>{if(mode==='grid'){el.style.left=(20+(i%3)*190)+'px';el.style.top=(20+Math.floor(i/3)*190)+'px'}else if(mode==='stack'){el.style.left=(25+i*12)+'px';el.style.top=(25+i*12)+'px'}else{el.style.left=(stage.clientWidth-el.offsetWidth)/2+'px';el.style.top=(stage.clientHeight-el.offsetHeight)/2+'px'}el.style.zIndex=++z});push()};
+$('clearCanvas').onclick=()=>{stage.querySelectorAll('.obj').forEach(e=>e.remove());active=null;$('empty').style.display='flex';push()};
+$('export').onclick=async()=>{if(!stage.querySelector('.obj')){alert('ক্যানভাসে ছবি বসান।');return}if(!window.html2canvas){alert('Export লাইব্রেরি লোড হয়নি। ইন্টারনেট চালু করে আবার চেষ্টা করুন।');return}const dpi=+$('dpi').value,mm=page==='A4'?[210,297]:[297,420],px=mm.map(n=>Math.round(n/25.4*dpi));try{const canvas=await html2canvas(stage,{scale:px[0]/stage.clientWidth,backgroundColor:stage.style.background||'#ffffff',useCORS:true});const out=document.createElement('canvas');out.width=px[0];out.height=px[1];out.getContext('2d').drawImage(canvas,0,0,out.width,out.height);out.toBlob(blob=>{if(!blob){alert('JPG তৈরি হয়নি');return}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Kiran-Creations-${page}-${dpi}DPI.jpg`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)},'image/jpeg',.95)}catch(e){alert('Export ব্যর্থ হয়েছে: '+e.message)}};
+stage.addEventListener('pointerdown',e=>{if(e.target===stage)selectObj(null)});
+setPage('A4',false);push();buttons();
+})();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body></html>
