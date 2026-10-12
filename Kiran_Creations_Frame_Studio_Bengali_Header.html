@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>কিরন ক্রিয়েশান — Frame Studio Pro</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100%; height: 100%; font-family: Arial, "Noto Sans Bengali", sans-serif; }
+  .brand {
+    min-height: 76px;
+    background: #ff0000;
+    color: #fff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    line-height: 1.25;
+  }
+  .brand-name { font-size: clamp(23px, 3vw, 36px); font-weight: 800; }
+  .brand-phone { font-size: clamp(16px, 2vw, 22px); font-weight: 700; margin-top: 3px; }
+  iframe { display: block; width: 100%; height: calc(100% - 76px); border: 0; }
+  @media (max-width: 500px) {
+    .brand { min-height: 84px; }
+    iframe { height: calc(100% - 84px); }
+  }
+</style>
+</head>
+<body>
+  <header class="brand">
+    <div class="brand-name">কিরন ক্রিয়েশান</div>
+    <div class="brand-phone">মোঃ 8609797901</div>
+  </header>
+  <iframe
+    src="https://kirancreation.github.io/kiran-creations-frame-studio/"
+    title="Kiran Creations Frame Studio Pro"
+    allow="clipboard-read; clipboard-write"
+    loading="eager">
+  </iframe>
+</body>
+</html>
